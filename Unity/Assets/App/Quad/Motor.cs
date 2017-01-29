@@ -22,35 +22,22 @@ namespace App
 			CW, CCW,
 		}
 
-		public float RevsPerMinute;		// revolutions per minute
+		public float RevsPerMinute;			// revolutions per minute
 		public float LiftFactor;			// how much lift motor generates per rev/min
-		public ESpin Spin;
-		public Vector3 Force;
+		public ESpin SpinDirection;
 
-		public float LiftForce
-		{
-			get
-			{
-				return ForceDir*RevsPerMinute*LiftFactor*ForceDir;
-			}
-		}
+		public float ForceGizmoScale = 5;
+		public float RotGizmoScale = 0.1f;
 
-		public Vector3 ForceDir
-		{
-			get
-			{
-				
-			}
-		}
+		public Vector3 WorldForce { get { return transform.InverseTransformVector(LocalForce); } }
+		public Vector3 LocalForce { get { return ForceDir*RevsPerMinute*LiftFactor; } }
+		public float SpinDir { get { return SpinDirection == ESpin.CW ? 1 : -1; } }
+		public Vector3 ForceDir { get { return SpinDir*transform.up; } }
 
-		float ForceDir()
-		{
-			return Spin == ESpin.CW ? 1 : -1;
-		}
+		private static int TraceLevel = 1;
 
 		private void Awake()
 		{
-
 		}
 
 		private void Start()
@@ -59,6 +46,21 @@ namespace App
 
 		private void Update()
 		{
+			SpinBlade(Time.deltaTime);
+
+			if (TraceLevel > 0) DrawForceVector();
+		}
+
+		private void SpinBlade(float dt)
+		{
+			_rot += SpinDir*dt*RotGizmoScale;
+			var newQuat = Quaternion.AngleAxis(_rot, transform.up);
+			transform.rotation = newQuat;
+		}
+
+		private void DrawForceVector()
+		{
+			Debug.DrawLine(transform.position, transform.position + WorldForce*ForceGizmoScale, Color.magenta, 0, false);
 		}
 
 		private void FixedUpdate()
@@ -69,6 +71,8 @@ namespace App
 		{
 			LabelsAccess.DrawLabel(transform.position, gameObject.name, null);
 		}
+
+		float _rot;
 	}
 }
 
