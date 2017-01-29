@@ -1,0 +1,16 @@
+Builds/
+obj/
+Temp
+Library
+*~
+*.tmproj
+.DS_Store
+*.pidb*
+*.csproj*
+*.sln*
+*.apk
+*.orig*
+*.userprefs
+*.ipa
+.reuniter_data
+ReUniter.meta
