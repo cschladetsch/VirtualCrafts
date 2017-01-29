@@ -37,6 +37,7 @@ namespace App
 		}
 
 		public Motor FL, FR, RL, RR;
+		public Motor[] Motors { get { return _motors; } }
 
 		public EMode Mode;
 
@@ -59,6 +60,14 @@ namespace App
 			_rigidBody = GetComponent<Rigidbody>();
 			_motors = GetComponentsInChildren<Motor>();
 			Assert.AreEqual(4, _motors.Length);
+
+			_orientation = GetComponent<OrientationSensor>();
+			if (_orientation != null)
+			{
+				 _orientation.Euler
+				 	.Subscribe(r => Debug.Log("change: " + r))
+					.AddTo(this);
+			}
 		}
 
 		private void Start()
@@ -69,31 +78,74 @@ namespace App
 		{
 		}
 
+		// TODO: this could all be cleaner and clearer with 
+		// a single Flow.Channel<AppliedForce> given to a
+		// number of coros.
 		private void FixedUpdate()
 		{
-			var forces = new AppliedForce[4];
-			var n = 0;
+			ApplyForces(GatherForces());
+		}
+
+		List<AppliedForce> GatherForces()
+		{
+			var forces = new List<AppliedForce>();
+
+			forces.AddRange(ApplyForcesFromBlades());
+
+			forces.AddRange(GetWindForces());
+
+			forces.AddRange(GetRainForces());
+
+			return forces;
+		}
+
+		void ApplyForces(IList<AppliedForce> forces)
+		{
+			foreach (var force in forces)
+			{
+				_rigidBody.AddForceAtPosition(force.Force, force.Where, ForceMode.Impulse);
+			}
+			
+			if (TraceLevel > 1) DrawTotalForceVector(forces);
+		}
+
+		IEnumerable<AppliedForce> GetWindForces()
+		{
+			yield break;
+		}
+
+		IEnumerable<AppliedForce> GetRainForces()
+		{
+			yield break;
+		}
+
+		List<AppliedForce> ApplyForcesFromBlades()
+		{
+			var forces = new List<AppliedForce>();
 			foreach (var m in _motors)
 			{
-				_rigidBody.AddForceAtPosition(m.WorldForce, m.transform.position, ForceMode.Impulse);
-
-				forces[n++] = new AppliedForce(m.WorldForce, m.transform.position);
+				forces.Add(new AppliedForce(m.WorldForce, m.transform.position));
 			}
+			return forces;
+		}
 
-			if (TraceLevel > 1)
+		void DrawTotalForceVector(IEnumerable<AppliedForce> forces)
+		{
+			var forceTotal = Vector3.zero;
+			var posTotal = Vector3.zero;
+			var count = 0;
+			foreach (var f in forces)
 			{
-				var forceTotal = Vector3.zero;
-				var posTotal = Vector3.zero;
-				foreach (var f in forces)
-				{
-					forceTotal += f.Force;
-					posTotal += f.Where;
-				}
-
-				var center = posTotal/4.0f;
-				var force = forceTotal/4.0f;
-				Debug.DrawLine(center, center + force*ForceGizmoScale, Color.yellow, 0, false);
+				forceTotal += f.Force;
+				posTotal += f.Where;
+				++count;
 			}
+
+			float numForces = count;
+			var center = posTotal/numForces;
+			var force = forceTotal/numForces;
+
+			Debug.DrawLine(center, center + force*ForceGizmoScale, Color.yellow, 0, false);
 		}
 
 		struct AppliedForce
@@ -106,10 +158,21 @@ namespace App
 				Force = f;
 				Where = w;
 			}
+
+			// public static AppliedForce operator /(AppliedForce left, float scale)
+			// {
+			// 	return new AppliedForce(left.Force/scale, )
+			// }
+			// public static AppliedForce operator +(AppliedForce left, AppliedForce right)
+			// {
+			// 	return new AppliedForce(left.Force + right.Force, left.Where + (right.Where - left.Where));
+			// }
 		}
 
 		private Motor[] _motors;
 		private Rigidbody _rigidBody;
+
+		private OrientationSensor _orientation;
 	}
 }
 

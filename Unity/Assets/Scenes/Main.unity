@@ -256,7 +256,7 @@ MonoBehaviour:
   - 0
   - 0
   - 0
-  ForceGizmoScale: 5
+  ForceGizmoScale: 3
 --- !u!54 &238747820
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -272,6 +272,34 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &238747821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 238747817}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19a4300f33c35463d9b78e433f172f74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &238747824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 238747817}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e45e15dcbe2624490bc4e07085360a87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LeftMotorRpm: 200
+  RightMotorRpm: 200
+  UpMotorRpm: 200
+  DownMotorRpm: 200
+  OverrideUpDown: 0
+  OverrideLeftRight: 0
 --- !u!1 &248807480 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100004, guid: 66b5ed63e1b1d88478b57e37af2f6b8a, type: 2}
@@ -288,10 +316,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RevsPerMinute: 0
-  LiftFactor: 0
-  SpinDirection: 1
-  ForceGizmoScale: 5
-  RotGizmoScale: 20
+  LiftFactor: 1
+  SpinDirection: 0
+  ForceGizmoScale: 1
+  RotGizmoScale: 1
 --- !u!1 &360034441
 GameObject:
   m_ObjectHideFlags: 0
@@ -424,10 +452,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RevsPerMinute: 0
-  LiftFactor: 0
+  LiftFactor: 1
   SpinDirection: 1
-  ForceGizmoScale: 5
-  RotGizmoScale: 20
+  ForceGizmoScale: 1
+  RotGizmoScale: 1
 --- !u!1 &1291204235
 GameObject:
   m_ObjectHideFlags: 0
@@ -525,10 +553,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RevsPerMinute: 0
-  LiftFactor: 0
+  LiftFactor: 1
   SpinDirection: 0
-  ForceGizmoScale: 5
-  RotGizmoScale: 20
+  ForceGizmoScale: 1
+  RotGizmoScale: 1
 --- !u!1 &1980173201
 GameObject:
   m_ObjectHideFlags: 0
@@ -586,7 +614,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1980173201}
   m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalPosition: {x: 0, y: 24.25, z: -16.63}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -608,7 +636,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RevsPerMinute: 0
-  LiftFactor: 0
-  SpinDirection: 0
-  ForceGizmoScale: 5
-  RotGizmoScale: 20
+  LiftFactor: 1
+  SpinDirection: 1
+  ForceGizmoScale: 1
+  RotGizmoScale: 1
