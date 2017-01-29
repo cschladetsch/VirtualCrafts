@@ -56,6 +56,7 @@ namespace App
 		{
 			TraceLevel = 2;
 
+			_rigidBody = GetComponent<Rigidbody>();
 			_motors = GetComponentsInChildren<Motor>();
 			Assert.AreEqual(4, _motors.Length);
 		}

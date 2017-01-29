@@ -53,9 +53,8 @@ namespace App
 
 		private void SpinBlade(float dt)
 		{
-			_rot += SpinDir*dt*RotGizmoScale;
-			var newQuat = Quaternion.AngleAxis(_rot, transform.up);
-			transform.rotation = newQuat;
+			_rot += RevsPerMinute*SpinDir*dt*RotGizmoScale;
+			transform.localRotation = Quaternion.AngleAxis(_rot, Vector3.forward);
 		}
 
 		private void DrawForceVector()

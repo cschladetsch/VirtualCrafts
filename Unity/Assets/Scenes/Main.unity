@@ -170,6 +170,38 @@ Prefab:
       propertyPath: m_Layer
       value: 12
       objectReference: {fileID: 0}
+    - target: {fileID: 400008, guid: 66b5ed63e1b1d88478b57e37af2f6b8a, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400008, guid: 66b5ed63e1b1d88478b57e37af2f6b8a, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400008, guid: 66b5ed63e1b1d88478b57e37af2f6b8a, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400008, guid: 66b5ed63e1b1d88478b57e37af2f6b8a, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0.20646028
+      objectReference: {fileID: 0}
+    - target: {fileID: 400008, guid: 66b5ed63e1b1d88478b57e37af2f6b8a, type: 2}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400008, guid: 66b5ed63e1b1d88478b57e37af2f6b8a, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 0.978455
+      objectReference: {fileID: 0}
+    - target: {fileID: 400008, guid: 66b5ed63e1b1d88478b57e37af2f6b8a, type: 2}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400008, guid: 66b5ed63e1b1d88478b57e37af2f6b8a, type: 2}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -23.83
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 66b5ed63e1b1d88478b57e37af2f6b8a, type: 2}
   m_IsPrefabParent: 0
@@ -256,10 +288,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RevsPerMinute: 0
-  LiftFactor: 1
-  SpinDirection: 0
+  LiftFactor: 0
+  SpinDirection: 1
   ForceGizmoScale: 5
-  RotGizmoScale: 0.1
+  RotGizmoScale: 20
 --- !u!1 &360034441
 GameObject:
   m_ObjectHideFlags: 0
@@ -392,10 +424,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RevsPerMinute: 0
-  LiftFactor: 1
-  SpinDirection: 0
+  LiftFactor: 0
+  SpinDirection: 1
   ForceGizmoScale: 5
-  RotGizmoScale: 0.1
+  RotGizmoScale: 20
 --- !u!1 &1291204235
 GameObject:
   m_ObjectHideFlags: 0
@@ -493,10 +525,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RevsPerMinute: 0
-  LiftFactor: 1
+  LiftFactor: 0
   SpinDirection: 0
   ForceGizmoScale: 5
-  RotGizmoScale: 0.1
+  RotGizmoScale: 20
 --- !u!1 &1980173201
 GameObject:
   m_ObjectHideFlags: 0
@@ -576,7 +608,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RevsPerMinute: 0
-  LiftFactor: 1
+  LiftFactor: 0
   SpinDirection: 0
   ForceGizmoScale: 5
-  RotGizmoScale: 0.1
+  RotGizmoScale: 20
