@@ -923,9 +923,14 @@ MonoBehaviour:
   - 0
   ForceGizmoScale: 5
   Constraints: 010000000400000002000000
-  Mode: 0
+  Mode: 2
   DesiredHeight: 5
-  QuaternionControllerPID: {x: 0, y: 0, z: 0}
+  PidControllerPIDs:
+  - {x: 0.1, y: 0.5, z: 0.01}
+  - {x: 0.1, y: 0.5, z: 0.01}
+  - {x: 0.1, y: 0.5, z: 0.01}
+  - {x: 0.1, y: 0.5, z: 0.01}
+  QuaternionControllerPID: {x: 0.1, y: 0.5, z: 0.01}
 --- !u!1 &961365798
 GameObject:
   m_ObjectHideFlags: 0
@@ -1417,8 +1422,8 @@ GameObject:
   - component: {fileID: 1322947989}
   - component: {fileID: 1322947993}
   - component: {fileID: 1322947992}
-  - component: {fileID: 1322947991}
   - component: {fileID: 1322947990}
+  - component: {fileID: 1322947991}
   m_Layer: 12
   m_Name: Sensors
   m_TagString: Untagged
@@ -1450,6 +1455,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee284d6ca989e409f959a1bec2d7529a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Orientation: {x: 0, y: 0, z: 0, w: 0}
 --- !u!114 &1322947991
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1458,9 +1464,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1322947988}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19a4300f33c35463d9b78e433f172f74, type: 3}
+  m_Script: {fileID: 11500000, guid: efe07ae71417a48dd8ee6ea985237688, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Height: 0
 --- !u!114 &1322947992
 MonoBehaviour:
   m_ObjectHideFlags: 0

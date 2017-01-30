@@ -100,8 +100,6 @@ namespace App.Quad
 			ApplyForces(GatherForces());
 		}
 
-		float[] _errors = new float[4];
-
 		void CalcMotorRpms()
 		{
 			if (Mode == EMode.Hover)
