@@ -39,7 +39,25 @@ namespace App.Quad
 
 		public EConstraints[] Constraints = new EConstraints[4];
 
+		public enum EMode
+		{
+			None,
+			ReturnToHome,
+			Hover,
+			Follow,
+			CircleAround,
+			FollowPath,
+		}
+
+		public EMode Mode;
+
 		public float DesiredHeight;
+
+		public Vector3[] PidControllerPIDs = new Vector3[4];
+		public PidController[] PidControllers = new PidController[4];
+
+		public Vector3 QuaternionControllerPID = new Vector3(.4f, .2f, .01f);
+		public PidQuaternionController PidQuaternionController;
 
 		private void Awake()
 		{
@@ -50,6 +68,14 @@ namespace App.Quad
 
 			Assert.AreEqual(4, _motors.Length);
 			Assert.IsNotNull(_rigidBody);
+
+			PidQuaternionController = new PidQuaternionController(QuaternionControllerPID.x, QuaternionControllerPID.y, QuaternionControllerPID.z);
+
+			for (int n = 0; n < 4; ++n)
+			{
+				var pid = PidControllerPIDs[n];
+				PidControllers[n] = new PidController(pid.x, pid.y, pid.z);
+			}
 		}
 
 		private void Start()
