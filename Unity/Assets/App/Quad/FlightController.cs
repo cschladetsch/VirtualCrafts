@@ -16,44 +16,30 @@ namespace App.Quad
 {
 	public class FlightController : MonoBehaviour 
 	{
-		public enum EControl
-		{
-			THR = 0,
-			RUD,
-			AIR,
-			ELE,
-		}
-
-		[Flags]
-		public enum EMode
-		{
-			None = 0,
-			Grounded = 1,
-			AltitudeHold = 2,
-			AttitudeHold = 4,
-			ReturnToHome = 8,
-			Follow = 16,
-			Hover = AltitudeHold | AttitudeHold,
-		}
-
 		public Body Body;
+		public Transmitter Transmitter;
 
 		public Motor FL, FR, RL, RR;
 		public Motor[] Motors { get { return _motors; } }
 
-		public EMode Mode;
-
-		// 0 = THR	Throttle, or overall rpm gain for blades
-		// 1 = RUD	Rudder. Control around vertical axis - YAW
-		// 2 = ELE	Pitch forward and move forward, or pitch back and move back
-		// 3 = AIR	Tilt left and move left, or tilt right and move right
-		public float[] Inputs = new float[4];
-		public float[] Trims = new float[4];
 		public float[] MotorRpms = new float[4];
 
 		public float ForceGizmoScale = 5;
 
 		private static int TraceLevel;
+
+		[Flags]
+		public enum EConstraints
+		{
+			None = 0,
+			Attitude = 1,
+			Height = 2,
+			Speed = 4,
+		}
+
+		public EConstraints[] Constraints = new EConstraints[4];
+
+		public float DesiredHeight;
 
 		private void Awake()
 		{
@@ -61,15 +47,9 @@ namespace App.Quad
 
 			_motors = Body.GetComponentsInChildren<Motor>();
 			_rigidBody = Body.GetComponent<Rigidbody>();
-			Assert.AreEqual(4, _motors.Length);
 
-			// _orientation = GetComponent<Sensor.OrientationSensor>();
-			// if (_orientation != null)
-			// {
-			// 	 _orientation.Euler
-			// 	 	.Subscribe(r => Debug.Log("change: " + r))
-			// 		.AddTo(this);
-			// }
+			Assert.AreEqual(4, _motors.Length);
+			Assert.IsNotNull(_rigidBody);
 		}
 
 		private void Start()
@@ -78,6 +58,10 @@ namespace App.Quad
 
 		private void Update()
 		{
+			foreach (var m in _motors)
+			{
+				DebugGraph.Log(m.gameObject.name, m.RevsPerMinute);
+			}
 		}
 
 		// TODO: this could all be cleaner and clearer with 
