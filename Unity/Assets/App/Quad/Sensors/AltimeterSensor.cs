@@ -14,22 +14,13 @@ using UniRx;
 
 namespace App.Quad.Sensor
 {
-	public class Altimeter : QuadSensor
+	public class AltimeterSensor : QuadSensor
 	{
-		private void Awake()
-		{
-		}
-
-		private void Start()
-		{
-		}
-
-		private void Update()
-		{
-		}
+		public float Height;
 
 		private void FixedUpdate()
 		{
+			Height = transform.position.y;
 		}
 	}
 }

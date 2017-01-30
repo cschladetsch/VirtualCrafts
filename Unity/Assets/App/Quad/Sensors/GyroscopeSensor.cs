@@ -16,20 +16,11 @@ namespace App.Quad.Sensor
 {
 	public class GyroscopeSensor : QuadSensor
 	{
-		private void Awake()
-		{
-		}
-
-		private void Start()
-		{
-		}
-
-		private void Update()
-		{
-		}
+		public Quaternion Orientation;
 
 		private void FixedUpdate()
 		{
+			Orientation = transform.rotation;
 		}
 	}
 }

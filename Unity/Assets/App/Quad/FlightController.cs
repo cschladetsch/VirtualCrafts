@@ -95,7 +95,23 @@ namespace App.Quad
 		// number of coros.
 		private void FixedUpdate()
 		{
+			CalcMotorRpms();
+
 			ApplyForces(GatherForces());
+		}
+
+		float[] _errors = new float[4];
+
+		void CalcMotorRpms()
+		{
+			if (Mode == EMode.Hover)
+			{
+				// var dh = transform.position.y - DesiredHeight;
+				// var error = dh;
+				// var delta = _errors[0] - 
+				
+				// float res = PidControllers[0].ComputeOutput(error, delta, Time.fixedDeltaTime);
+			}
 		}
 
 		List<AppliedForce> GatherForces()
@@ -170,20 +186,14 @@ namespace App.Quad
 				Force = f;
 				Where = w;
 			}
-
-			// public static AppliedForce operator /(AppliedForce left, float scale)
-			// {
-			// 	return new AppliedForce(left.Force/scale, )
-			// }
-			// public static AppliedForce operator +(AppliedForce left, AppliedForce right)
-			// {
-			// 	return new AppliedForce(left.Force + right.Force, left.Where + (right.Where - left.Where));
-			// }
 		}
 
 		private Motor[] _motors;
 		private Rigidbody _rigidBody;
 
+		private Sensor.AccellerometerSensor _accellerometer;
+		private Sensor.AltimeterSensor _altimeter;
+		private Sensor.GyroscopeSensor _gyro;
 		private Sensor.OrientationSensor _orientation;
 	}
 }

@@ -12,13 +12,24 @@ using App.Utils;
 
 using UniRx;
 
-namespace App.Quad
+namespace App
 {
-	public class Body : MonoBehaviour 
+	public class FrameView : MonoBehaviour 
 	{
+		private void Awake()
+		{
+		}
+
+		private void Start()
+		{
+		}
+
 		private void Update()
 		{
-			DebugGraph.Log("height", transform.position.y);
+		}
+
+		private void FixedUpdate()
+		{
 		}
 	}
 }
