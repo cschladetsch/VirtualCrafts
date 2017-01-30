@@ -330,9 +330,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RevsPerMinute: 0
-  LiftFactor: 0.1
+  LiftFactor: 0.01
   SpinDirection: 0
-  ForceGizmoScale: 1
+  ForceGizmoScale: 1000
   RotGizmoScale: 50
 --- !u!23 &248807483
 MeshRenderer:
@@ -667,9 +667,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RevsPerMinute: 0
-  LiftFactor: 0.1
+  LiftFactor: 0.01
   SpinDirection: 1
-  ForceGizmoScale: 1
+  ForceGizmoScale: 1000
   RotGizmoScale: 50
 --- !u!23 &749820171
 MeshRenderer:
@@ -1615,9 +1615,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RevsPerMinute: 0
-  LiftFactor: 0.1
+  LiftFactor: 0.01
   SpinDirection: 0
-  ForceGizmoScale: 1
+  ForceGizmoScale: 1000
   RotGizmoScale: 50
 --- !u!23 &1796238312
 MeshRenderer:
@@ -1963,9 +1963,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RevsPerMinute: 0
-  LiftFactor: 0.1
+  LiftFactor: 0.01
   SpinDirection: 1
-  ForceGizmoScale: 1
+  ForceGizmoScale: 1000
   RotGizmoScale: 50
 --- !u!23 &2119992574
 MeshRenderer:

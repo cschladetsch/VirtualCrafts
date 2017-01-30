@@ -29,10 +29,22 @@ namespace App
 		public float ForceGizmoScale = 5;
 		public float RotGizmoScale = 0.1f;
 
-		public Vector3 WorldForce { get { return transform.InverseTransformVector(LocalForce); } }
-		public Vector3 LocalForce { get { return ForceDir*RevsPerMinute*LiftFactor; } }
+		public Vector3 WorldForce 
+		{ 
+			get 
+			{ 
+				// return transform.TransformVector(transform.up * LocalForceMag - transform.localPosition);
+Debug.Log(transform.up);
+				return transform.TransformVector(transform.localRotation*transform.up*LocalForceMag);// - transform.localPosition);
+			} 
+		}
+
+		public float LocalForceMag 
+		{ 
+			get { return RevsPerMinute*LiftFactor; } 
+		}
+
 		public float SpinDir { get { return SpinDirection == ESpin.CW ? 1 : -1; } }
-		public Vector3 ForceDir { get { return SpinDir*transform.up; } }
 
 		private static int TraceLevel = 1;
 
