@@ -12,9 +12,9 @@ using App.Utils;
 
 using UniRx;
 
-namespace App
+namespace App.Quad.Sensor
 {
-	public class OrientationSensor : MonoBehaviour 
+	public class OrientationSensor : QuadSensor
 	{
 		public IObservable<Vector3> Euler = new ReactiveProperty<Vector3>();
 		// public IObservable<Quaternion> Orientation = new ReactiveProperty<Quaternion>();

@@ -316,10 +316,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RevsPerMinute: 0
-  LiftFactor: 1
+  LiftFactor: 0.1
   SpinDirection: 0
   ForceGizmoScale: 1
-  RotGizmoScale: 1
+  RotGizmoScale: 50
 --- !u!1 &360034441
 GameObject:
   m_ObjectHideFlags: 0
@@ -452,10 +452,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RevsPerMinute: 0
-  LiftFactor: 1
+  LiftFactor: 0.1
   SpinDirection: 1
   ForceGizmoScale: 1
-  RotGizmoScale: 1
+  RotGizmoScale: 50
 --- !u!1 &1291204235
 GameObject:
   m_ObjectHideFlags: 0
@@ -553,10 +553,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RevsPerMinute: 0
-  LiftFactor: 1
+  LiftFactor: 0.1
   SpinDirection: 0
   ForceGizmoScale: 1
-  RotGizmoScale: 1
+  RotGizmoScale: 50
 --- !u!1 &1980173201
 GameObject:
   m_ObjectHideFlags: 0
@@ -636,7 +636,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RevsPerMinute: 0
-  LiftFactor: 1
+  LiftFactor: 0.1
   SpinDirection: 1
   ForceGizmoScale: 1
-  RotGizmoScale: 1
+  RotGizmoScale: 50

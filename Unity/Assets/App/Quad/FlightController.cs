@@ -12,7 +12,7 @@ using App.Utils;
 
 using UniRx;
 
-namespace App
+namespace App.Quad
 {
 	public class FlightController : MonoBehaviour 
 	{
@@ -36,6 +36,8 @@ namespace App
 			Hover = AltitudeHold | AttitudeHold,
 		}
 
+		public Body Body;
+
 		public Motor FL, FR, RL, RR;
 		public Motor[] Motors { get { return _motors; } }
 
@@ -57,17 +59,17 @@ namespace App
 		{
 			TraceLevel = 2;
 
-			_rigidBody = GetComponent<Rigidbody>();
-			_motors = GetComponentsInChildren<Motor>();
+			_motors = Body.GetComponentsInChildren<Motor>();
+			_rigidBody = Body.GetComponent<Rigidbody>();
 			Assert.AreEqual(4, _motors.Length);
 
-			_orientation = GetComponent<OrientationSensor>();
-			if (_orientation != null)
-			{
-				 _orientation.Euler
-				 	.Subscribe(r => Debug.Log("change: " + r))
-					.AddTo(this);
-			}
+			// _orientation = GetComponent<Sensor.OrientationSensor>();
+			// if (_orientation != null)
+			// {
+			// 	 _orientation.Euler
+			// 	 	.Subscribe(r => Debug.Log("change: " + r))
+			// 		.AddTo(this);
+			// }
 		}
 
 		private void Start()
@@ -172,7 +174,7 @@ namespace App
 		private Motor[] _motors;
 		private Rigidbody _rigidBody;
 
-		private OrientationSensor _orientation;
+		private Sensor.OrientationSensor _orientation;
 	}
 }
 

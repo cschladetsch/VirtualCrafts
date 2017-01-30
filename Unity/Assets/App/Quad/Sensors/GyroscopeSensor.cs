@@ -12,10 +12,25 @@ using App.Utils;
 
 using UniRx;
 
-namespace App.Quad
+namespace App.Quad.Sensor
 {
-	public class Body : MonoBehaviour 
+	public class GyroscopeSensor : QuadSensor
 	{
+		private void Awake()
+		{
+		}
+
+		private void Start()
+		{
+		}
+
+		private void Update()
+		{
+		}
+
+		private void FixedUpdate()
+		{
+		}
 	}
 }
 

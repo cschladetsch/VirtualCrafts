@@ -14,8 +14,23 @@ using UniRx;
 
 namespace App.Quad
 {
-	public class Body : MonoBehaviour 
+	public class Receiver : MonoBehaviour 
 	{
+		private void Awake()
+		{
+		}
+
+		private void Start()
+		{
+		}
+
+		private void Update()
+		{
+		}
+
+		private void FixedUpdate()
+		{
+		}
 	}
 }
 
