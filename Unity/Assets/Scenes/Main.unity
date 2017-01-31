@@ -198,6 +198,24 @@ Prefab:
       propertyPath: Transmitter
       value: 
       objectReference: {fileID: 1214967439}
+    - target: {fileID: 1843536191425782, guid: 84a7c3c20d71e406088818efdb39bd41, type: 2}
+      propertyPath: m_Name
+      value: ArmZ+X
+      objectReference: {fileID: 0}
+    - target: {fileID: 1392576506309832, guid: 84a7c3c20d71e406088818efdb39bd41, type: 2}
+      propertyPath: m_Name
+      value: ArmZ-X
+      objectReference: {fileID: 0}
+    - target: {fileID: 54522034294490418, guid: 84a7c3c20d71e406088818efdb39bd41,
+        type: 2}
+      propertyPath: m_Interpolate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 54522034294490418, guid: 84a7c3c20d71e406088818efdb39bd41,
+        type: 2}
+      propertyPath: m_CollisionDetection
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 84a7c3c20d71e406088818efdb39bd41, type: 2}
   m_IsPrefabParent: 0
