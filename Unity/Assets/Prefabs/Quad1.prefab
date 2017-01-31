@@ -547,7 +547,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1371676205318098}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4989948472165524}
@@ -709,7 +709,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1262662254809652}
   m_LocalRotation: {x: 0, y: 0.38268343, z: 0, w: 0.92387956}
-  m_LocalPosition: {x: 0, y: 0.29, z: 0}
+  m_LocalPosition: {x: 0, y: 0.25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4022290299972914}
@@ -1561,10 +1561,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Esc: {fileID: 0}
   RevsPerMinute: 0
-  ForceMultiPlier: 0.1
+  ForceMultiPlier: 0.001
   SpinDirection: 1
-  TorqueGizmoScale: 0.001
-  ForceGizmoScale: 0.01
+  TorqueGizmoScale: 45
+  ForceGizmoScale: 60
   RotScale: 6
 --- !u!114 &114437282016054564
 MonoBehaviour:
@@ -1579,10 +1579,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Esc: {fileID: 0}
   RevsPerMinute: 0
-  ForceMultiPlier: 0.1
+  ForceMultiPlier: 0.001
   SpinDirection: 1
-  TorqueGizmoScale: 0.001
-  ForceGizmoScale: 0.01
+  TorqueGizmoScale: 45
+  ForceGizmoScale: 60
   RotScale: 6
 --- !u!114 &114511630276186280
 MonoBehaviour:
@@ -1699,10 +1699,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Esc: {fileID: 0}
   RevsPerMinute: 0
-  ForceMultiPlier: 0.1
+  ForceMultiPlier: 0.001
   SpinDirection: 0
-  TorqueGizmoScale: 0.001
-  ForceGizmoScale: 0.01
+  TorqueGizmoScale: 45
+  ForceGizmoScale: 60
   RotScale: 6
 --- !u!114 &114918528650772646
 MonoBehaviour:
@@ -1728,10 +1728,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Esc: {fileID: 0}
   RevsPerMinute: 0
-  ForceMultiPlier: 0.1
+  ForceMultiPlier: 0.001
   SpinDirection: 0
-  TorqueGizmoScale: 0.001
-  ForceGizmoScale: 0.01
+  TorqueGizmoScale: 45
+  ForceGizmoScale: 60
   RotScale: 6
 --- !u!114 &114969874114606072
 MonoBehaviour:
