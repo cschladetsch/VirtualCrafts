@@ -16,6 +16,8 @@ namespace App.Quad
 {
 	public class Body : MonoBehaviour 
 	{
+		public GameObject CenterOfMass;
+
 		private void Update()
 		{
 			DebugGraph.Log("height", transform.position.y);

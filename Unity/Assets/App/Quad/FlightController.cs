@@ -61,7 +61,7 @@ namespace App.Quad
 
 		private void Awake()
 		{
-			TraceLevel = 2;
+			TraceLevel = 0;
 
 			_motors = Body.GetComponentsInChildren<Motor>();
 			_rigidBody = Body.GetComponent<Rigidbody>();
@@ -84,6 +84,8 @@ namespace App.Quad
 
 		private void Update()
 		{
+			if (TraceLevel < 5) return;
+
 			foreach (var m in _motors)
 			{
 				DebugGraph.Log(m.gameObject.name, m.RevsPerMinute);
@@ -130,9 +132,11 @@ namespace App.Quad
 			foreach (var force in forces)
 			{
 				_rigidBody.AddForceAtPosition(force.Force, force.Where, ForceMode.Impulse);
+
+				_rigidBody.AddTorque(force.Torque, ForceMode.Impulse);
 			}
 			
-			if (TraceLevel > 1) DrawTotalForceVector(forces);
+			if (TraceLevel > 1) DrawTotalForces(forces);
 		}
 
 		IEnumerable<AppliedForce> GetWindForces()
@@ -150,19 +154,21 @@ namespace App.Quad
 			var forces = new List<AppliedForce>();
 			foreach (var m in _motors)
 			{
-				forces.Add(new AppliedForce(m.WorldForce, m.transform.position));
+				forces.Add(new AppliedForce(m.WorldForce, m.transform.position, m.WorldTorque));
 			}
 			return forces;
 		}
 
-		void DrawTotalForceVector(IEnumerable<AppliedForce> forces)
+		void DrawTotalForces(IEnumerable<AppliedForce> forces)
 		{
 			var forceTotal = Vector3.zero;
+			var torqueTotal = Vector3.zero;
 			var posTotal = Vector3.zero;
 			var count = 0;
 			foreach (var f in forces)
 			{
 				forceTotal += f.Force;
+				torqueTotal += f.Force;
 				posTotal += f.Where;
 				++count;
 			}
@@ -170,19 +176,23 @@ namespace App.Quad
 			float numForces = count;
 			var center = posTotal/numForces;
 			var force = forceTotal/numForces;
+			var torque = torqueTotal/numForces;
 
 			Debug.DrawLine(center, center + force*ForceGizmoScale, Color.yellow, 0, false);
+			Debug.DrawLine(center, center + torque*ForceGizmoScale, Color.magenta, 0, false);
 		}
 
 		struct AppliedForce
 		{
 			public Vector3 Force;
+			public Vector3 Torque;
 			public Vector3 Where;
 
-			public AppliedForce(Vector3 f, Vector3 w)
+			public AppliedForce(Vector3 f, Vector3 w, Vector3 t)
 			{
 				Force = f;
 				Where = w;
+				Torque = t;
 			}
 		}
 

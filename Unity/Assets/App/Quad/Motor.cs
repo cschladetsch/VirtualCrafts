@@ -13,7 +13,7 @@ using App.Utils;
 
 using UniRx;
 
-namespace App
+namespace App.Quad
 {
 	public class Motor : MonoBehaviour 
 	{
@@ -22,34 +22,40 @@ namespace App
 			CW, CCW,
 		}
 
-		public float RevsPerMinute;			// revolutions per minute
-		public float LiftFactor;			// how much lift motor generates per rev/min
-		public ESpin SpinDirection;
+		public float RevsPerMinute;				// revolutions per minute
+		public float ForceMultiPlier;			// How much extra force is added per revolution
+		public ESpin SpinDirection;				// the direction of the motor. changes the torque direction
 
-		public float ForceGizmoScale = 5;
-		public float RotGizmoScale = 0.1f;
+		public float TorqueGizmoScale = 5;		// just used for render force gizmo lines
+		public float ForceGizmoScale = 5;		// just used for render force gizmo lines
+		public float RotScale = 6;				// 360/60 = 6. this means shows real rotational speed
 
-		public Vector3 WorldForce 
-		{ 
-			get 
-			{ 
-				// return transform.TransformVector(transform.up * LocalForceMag - transform.localPosition);
-Debug.Log(transform.up);
-				return transform.TransformVector(transform.localRotation*transform.up*LocalForceMag);// - transform.localPosition);
-			} 
+		public static int TraceLevel = 3;
+
+		// world-space torque turning force
+		public Vector3 WorldTorque
+		{
+			get
+			{
+				// https://en.wikipedia.org/wiki/Torque
+				var com = _body.CenterOfMass.transform.position;
+				var motorPos = transform.position;
+				var fromCenter = com - motorPos;
+				var cross = Vector3.Cross(fromCenter, WorldForce);
+				var torque = cross*SpinDir;
+				return torque;
+			}
 		}
 
-		public float LocalForceMag 
-		{ 
-			get { return RevsPerMinute*LiftFactor; } 
-		}
+		// the world-space thrust supplied by the rotor attached to the motor
+		public Vector3 WorldForce { get { return -transform.up*RevsPerMinute*ForceMultiPlier; } }
 
+		// direction of the motor - clockwise or counter-clockwise
 		public float SpinDir { get { return SpinDirection == ESpin.CW ? 1 : -1; } }
-
-		private static int TraceLevel = 1;
 
 		private void Awake()
 		{
+			_body = GetComponentInParent<Body>();
 		}
 
 		private void Start()
@@ -65,13 +71,16 @@ Debug.Log(transform.up);
 
 		private void SpinBlade(float dt)
 		{
-			_rot += RevsPerMinute*SpinDir*dt*RotGizmoScale;
-			transform.localRotation = Quaternion.AngleAxis(_rot, Vector3.forward);
+			_rot += RevsPerMinute*SpinDir*dt*RotScale;
+			transform.localRotation = Quaternion.AngleAxis((float)_rot, Vector3.up);
 		}
 
 		private void DrawForceVector()
 		{
-			Debug.DrawLine(transform.position, transform.position + WorldForce*ForceGizmoScale, Color.magenta, 0, false);
+			Debug.DrawLine(transform.position, transform.position + WorldForce*ForceGizmoScale, Color.yellow, 0, false);
+			Debug.DrawLine(transform.position, transform.position + WorldTorque*TorqueGizmoScale, Color.magenta, 0, false);
+		
+			DebugGraph.Log("torque", WorldTorque.y);
 		}
 
 		private void FixedUpdate()
@@ -83,7 +92,8 @@ Debug.Log(transform.up);
 			LabelsAccess.DrawLabel(transform.position, gameObject.name, null);
 		}
 
-		float _rot;
+		double _rot;
+		private Body _body;
 	}
 }
 
