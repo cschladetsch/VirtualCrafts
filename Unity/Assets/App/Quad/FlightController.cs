@@ -61,7 +61,7 @@ namespace App.Quad
 
 		private void Awake()
 		{
-			TraceLevel = 0;
+			TraceLevel = 5;
 
 			_motors = Body.GetComponentsInChildren<Motor>();
 			_rigidBody = Body.GetComponent<Rigidbody>();
@@ -178,8 +178,8 @@ namespace App.Quad
 			var force = forceTotal/numForces;
 			var torque = torqueTotal/numForces;
 
-			Debug.DrawLine(center, center + force*ForceGizmoScale, Color.yellow, 0, false);
-			Debug.DrawLine(center, center + torque*ForceGizmoScale, Color.magenta, 0, false);
+			Debug.DrawLine(center, center + force*ForceGizmoScale, Color.red, 0, false);
+			Debug.DrawLine(center, center + torque*ForceGizmoScale, Color.blue, 0, false);
 		}
 
 		struct AppliedForce

@@ -15,8 +15,11 @@ using UniRx;
 
 namespace App.Quad
 {
+	[RequireComponent(typeof(ElectronicSpeedController))]
 	public class Motor : MonoBehaviour 
 	{
+		public ElectronicSpeedController Esc;
+
 		public enum ESpin
 		{
 			CW, CCW,
@@ -48,14 +51,15 @@ namespace App.Quad
 		}
 
 		// the world-space thrust supplied by the rotor attached to the motor
-		public Vector3 WorldForce { get { return -transform.up*RevsPerMinute*ForceMultiPlier; } }
+		public Vector3 WorldForce { get { return transform.up*RevsPerMinute*ForceMultiPlier; } }
 
 		// direction of the motor - clockwise or counter-clockwise
-		public float SpinDir { get { return SpinDirection == ESpin.CW ? 1 : -1; } }
+		public float SpinDir { get { return SpinDirection == ESpin.CW ? -1 : 1; } }
 
 		private void Awake()
 		{
 			_body = GetComponentInParent<Body>();
+			Esc = GetComponent<ElectronicSpeedController>();
 		}
 
 		private void Start()
