@@ -35,10 +35,10 @@ namespace App.Math
 				var p = transform.position;
 				transform.position = p + offset;
 
-				Debug.Log(offset);
-				DebugGraph.Log(transform.position.x);
-				DebugGraph.Log(transform.position.y);
-				DebugGraph.Log(transform.position.z);
+				// Debug.Log(offset);
+				// DebugGraph.Log(transform.position.x);
+				// DebugGraph.Log(transform.position.y);
+				// DebugGraph.Log(transform.position.z);
 
 				yield return 0;
 			}

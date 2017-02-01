@@ -23,7 +23,6 @@ namespace App.Quad
 
 		public float[] MotorRpms = new float[4];
 
-		public float ForceGizmoScale = 5;
 
 		private static int TraceLevel;
 
@@ -49,38 +48,56 @@ namespace App.Quad
 		public EMode Mode;
 
 		public float DesiredHeight;
+		public Vector3 DesiredEuler = Vector3.zero;
 
 		public Vector3 DefaultMotorPidValues = new Vector3(0.8f, 0.5f, 0.1f);
 		public Motor[] Motors;
 
-		public Vector3 QuaternionControllerPID = new Vector3(.4f, .2f, .01f);
-		public PidQuaternionController PidQuaternionController;
+		// public Vector3 QuaternionControllerPID = new Vector3(.4f, .2f, .01f);
+		// public PidQuaternionController PidQuaternionController;
 
-		public Sensor.GyroscopeSensor Gyro;
+		// public ReactiveProperty<Vector3> Accellerometer = new ReactiveProperty<Vector3>();
+		// public ReactiveProperty<float> Height = new ReactiveProperty<float>();
+		// public ReactiveProperty<Quaternion> Rotation = new ReactiveProperty<Quaternion>();
+		// public ReactiveProperty<Vector3> Position = new ReactiveProperty<Vector3>();
 
 		private void Awake()
 		{
-			TraceLevel = 5;
+			TraceLevel = 10;
 
 			_motors = Body.GetComponentsInChildren<Motor>();
-			Assert.AreEqual(_motors.Count, 4);
+			Assert.AreEqual(_motors.Length, 4);
 
-			_rigidBody = Body.GetComponent<Rigidbody>();
-			Assert.IsNotNull(_rigidBody);
+			PrepareMotors();
 
-			PidQuaternionController = new PidQuaternionController(QuaternionControllerPID.x, QuaternionControllerPID.y, QuaternionControllerPID.z);
+			// PidQuaternionController = new PidQuaternionController(QuaternionControllerPID.x, QuaternionControllerPID.y, QuaternionControllerPID.z);
 
+
+			// Position
+			// 	.DistinctUntilChanged()
+			// 	.Subscribe(p => PositionChanged(p))
+			// 	.AddTo(this);
+
+			// Position
+			// 	.DistinctUntilChanged()
+			// 	.Select(p => p.y)
+			// 	.Subscribe(p => HeightChanged(p))
+			// 	.AddTo(this);
+
+			// Rotation
+			// 	.Select(r => r.eulerAngles)
+			// 	.DistinctUntilChanged()
+			// 	.Subscribe(p => EulerChanged(p))
+			// 	.AddTo(this);
+		}
+
+		private void PrepareMotors()
+		{
 			var pid = DefaultMotorPidValues;
 			for (int n = 0; n < 4; ++n)
 			{
-				Motors[n].PidController = new PidController(pid.x, pid.y, pid.z);
+				Motors[n].PidController = new PidScalarController(pid.x, pid.y, pid.z);
 			}
-
-			Gryo
-				.Pitch
-				.DistinctUntilChanged()
-				.Subscribe(p => DealWithNewPitch(p))
-				.AddTo(this);
 		}
 
 		private void Start()
@@ -89,124 +106,180 @@ namespace App.Quad
 
 		private void Update()
 		{
-			if (TraceLevel < 5) return;
-
-			foreach (var m in _motors)
-			{
-				DebugGraph.Log(m.gameObject.name, m.RevsPerMinute);
-			}
+			if (TraceLevel < 3) return;
 		}
 
 		// TODO: this could all be cleaner and clearer with 
 		// a single Flow.Channel<AppliedForce> given to a
 		// number of coros.
+
+
+		public float AngleScale = 1;
+		public float HeightScale = 2;
+
 		private void FixedUpdate()
 		{
-			CalcMotorRpms();
+			var frame = new Frame(transform);
+			var delta = frame - _thisFrame;
+			// var deltaDelta = _thisFrame - _lastFrame;
 
-			ApplyForces(GatherForces());
-		}
+			// find world vectors for each motor position
+			var vFL = FL.transform.position - Body.CenterOfMass.transform.position;
+			var vFR = FR.transform.position - Body.CenterOfMass.transform.position;
+			var vRL = RL.transform.position - Body.CenterOfMass.transform.position;
+			var vRR = RR.transform.position - Body.CenterOfMass.transform.position;
 
-		void CalcMotorRpms()
-		{
-			if (Mode == EMode.Hover)
+			// get the absolute height displacement for each motor relative to center of mass
+			var aFL = Mathf.Abs(vFL.y);
+			var aFR = Mathf.Abs(vFR.y);
+			var aRL = Mathf.Abs(vRL.y);
+			var aRR = Mathf.Abs(vRR.y);
+
+			// get the signs
+			var sFL = Mathf.Sign(vFL.y);
+			var sFR = Mathf.Sign(vFR.y);
+			var sRL = Mathf.Sign(vRL.y);
+			var sRR = Mathf.Sign(vRR.y);
+
+			// assume FL motor is most incorrect
+			var max = 0;
+			var dist = aFL;
+
+			// test FR
+			if (aFR > dist)
 			{
-				// var dh = transform.position.y - DesiredHeight;
-				// var error = dh;
-				// var delta = _errors[0] - 
+				max = 1;
+				dist = aFR;
+			}
+
+			// test rear left
+			if (aRL > dist)
+			{
+				max = 2;
+				dist = aRL;
+			}
+
+			// test rear right
+			if (aRR > dist)
+			{
+				max = 3;
+				dist = aRR;
+			}
+
+			var dt = Time.fixedDeltaTime;
+
+			// speed up or slow down according to which motor is most distant from vertical
+			// do the opposite to the opposite motor
+			//
+			// eventually we'd like to change them all a little...
+			float s = dist/2*AngleScale*dt;
+			switch (max)
+			{
+				// front left motor is dipping the most: speed it up and slow down opposite motor
+				case 0:
+					if (sFL < 0)
+						FL.DesiredRpm += s;
+					// else
+					// 	RR.DesiredRpm += s;
+					break;
 				
-				// float res = PidControllers[0].ComputeOutput(error, delta, Time.fixedDeltaTime);
+				// etc...
+				case 1:
+					if (sFR < 0)
+						FR.DesiredRpm += s;
+					// else
+					// 	RL.DesiredRpm += s;
+					break;
+				case 2:
+					if (sRL < 0)
+						RL.DesiredRpm += s;
+					// else
+					// 	FR.DesiredRpm += s;
+					break;
+				case 3:
+					if (sRR < 0)
+						RR.DesiredRpm += s;
+					// else
+					// 	FL.DesiredRpm += s;
+					break;
 			}
-		}
 
-		List<AppliedForce> GatherForces()
-		{
-			var forces = new List<AppliedForce>();
-
-			forces.AddRange(ApplyForcesFromBlades());
-
-			forces.AddRange(GetWindForces());
-
-			forces.AddRange(GetRainForces());
-
-			return forces;
-		}
-
-		void ApplyForces(IList<AppliedForce> forces)
-		{
-			foreach (var force in forces)
-			{
-				_rigidBody.AddForceAtPosition(force.Force, force.Where, ForceMode.Impulse);
-
-				_rigidBody.AddTorque(force.Torque, ForceMode.Impulse);
-			}
-			
-			if (TraceLevel > 1) DrawTotalForces(forces);
-		}
-
-		IEnumerable<AppliedForce> GetWindForces()
-		{
-			yield break;
-		}
-
-		IEnumerable<AppliedForce> GetRainForces()
-		{
-			yield break;
-		}
-
-		List<AppliedForce> ApplyForcesFromBlades()
-		{
-			var forces = new List<AppliedForce>();
+			// account for height
+			var bh = Body.transform.position.y;
+			var dh = DesiredHeight - bh;
+			var heightScale = dh*HeightScale*dt;
 			foreach (var m in _motors)
 			{
-				forces.Add(new AppliedForce(m.WorldForce, m.transform.position, m.WorldTorque));
+				m.DesiredRpm += heightScale;
 			}
-			return forces;
+
+			var pp = Body.transform.position;
+			pp.y = 5;
+			Body.transform.position = pp;
 		}
 
-		void DrawTotalForces(IEnumerable<AppliedForce> forces)
+		public float AngleToRpmCorrection = 1;
+		void Balance(Vector3 dir, float angle)
 		{
-			var forceTotal = Vector3.zero;
-			var torqueTotal = Vector3.zero;
-			var posTotal = Vector3.zero;
-			var count = 0;
-			foreach (var f in forces)
+			DebugGraph.Log("balx", dir.x);
+			DebugGraph.Log("baly", dir.y);
+			DebugGraph.Log("balz", dir.z);
+			DebugGraph.Log("angle", angle);
+
+/*
+			var aFL = Vector3.Angle(Vector3.right, dir);
+			var aFR = Vector3.Angle(Vector3.right, dir);
+			var aRL = Vector3.Angle(Vector3.right, dir);
+			var aRR = Vector3.Angle(Vector3.right, dir);
+
+			
+			var s = AngleToRpmCorrection;
+			var a = angle*s/2;
+			if (aFL > aFR)
 			{
-				forceTotal += f.Force;
-				torqueTotal += f.Force;
-				posTotal += f.Where;
-				++count;
+				if (aFL > aRL)
+				{
+					if (aFL > aRR)
+					{
+						FL.DesiredRpm -= a;
+						RR.DesiredRpm += a;
+						return;
+					}
+
+					RR.DesiredRpm -= a;
+					FL.DesiredRpm += a;
+					return;
+				}
+
+				FL.DesiredRpm -= a;
+				RR.DesiredRpm += a;
+				return;
 			}
 
-			float numForces = count;
-			var center = posTotal/numForces;
-			var force = forceTotal/numForces;
-			var torque = torqueTotal/numForces;
-
-			Debug.DrawLine(center, center + force*ForceGizmoScale, Color.red, 0, false);
-			Debug.DrawLine(center, center + torque*ForceGizmoScale, Color.blue, 0, false);
+			FL.DesiredRpm -= a;
+			RR.DesiredRpm += a;
+			*/
 		}
 
-		struct AppliedForce
+		struct Angles
 		{
-			public Vector3 Force;
-			public Vector3 Torque;
-			public Vector3 Where;
+			public Vector3 Axes;
 
-			public AppliedForce(Vector3 f, Vector3 w, Vector3 t)
+			public Angles(Transform tr)//, Quaternion dir)
 			{
-				Force = f;
-				Where = w;
-				Torque = t;
+				Axes = tr.rotation.eulerAngles;
 			}
 		}
 
-		private Rigidbody _rigidBody;
+		void SampleTransmitter()
+		{
+		}
 
-		private Sensor.AccellerometerSensor _accellerometer;
-		private Sensor.AltimeterSensor _altimeter;
-		private Sensor.GyroscopeSensor _gyro;
-		private Sensor.OrientationSensor _orientation;
+		Frame _lastFrame;
+		Frame _thisFrame;
+		FrameDelta _deltaFrame;
+
+		private Motor[] _motors;
 	}
 }
 

@@ -19,8 +19,6 @@ namespace App.Quad
 	public class Motor : MonoBehaviour 
 	{
 		public PidScalarController PidController;
-		public float DesiredRpm;
-		public float Rpm;
 
 		public enum ESpin
 		{
@@ -28,7 +26,8 @@ namespace App.Quad
 			CCW,	// counter clockwise
 		}
 
-		public float RevsPerMinute;				// revolutions per minute
+		public float DesiredRpm;
+		public float Rpm;						// revolutions per minute
 		public float ForceMultiPlier;			// How much extra force is added per revolution
 		public ESpin SpinDirection;				// the direction of the motor. changes the torque direction
 
@@ -54,7 +53,7 @@ namespace App.Quad
 		}
 
 		// the world-space thrust supplied by the rotor attached to the motor
-		public Vector3 WorldForce { get { return transform.up*RevsPerMinute*ForceMultiPlier; } }
+		public Vector3 WorldForce { get { return transform.up*Rpm*ForceMultiPlier; } }
 
 		// direction of the motor - clockwise or counter-clockwise
 		public float SpinDir { get { return SpinDirection == ESpin.CW ? -1 : 1; } }
@@ -62,7 +61,6 @@ namespace App.Quad
 		private void Awake()
 		{
 			_body = GetComponentInParent<Body>();
-			Esc = GetComponent<ElectronicSpeedController>();
 		}
 
 		private void Start()
@@ -83,9 +81,9 @@ namespace App.Quad
 			transform.localRotation = Quaternion.AngleAxis((float)_rot, Vector3.up);
 		}
 
-		void UpdateRotate(float dt)
+		void UpdateRotation(float dt)
 		{
-			_rot += RevsPerMinute*SpinDir*dt*RotScale;
+			_rot += Rpm*SpinDir*dt*RotScale;
 			while (_rot > 360) _rot -= 360;
 			while (_rot < 360) _rot += 360;
 		}
@@ -100,6 +98,8 @@ namespace App.Quad
 
 		private void FixedUpdate()
 		{
+			var deltaRpm = PidController.Calculate(DesiredRpm, Rpm, Time.fixedDeltaTime);
+			Rpm += deltaRpm;
 		}
 
 		private void OnDrawGizmos()
