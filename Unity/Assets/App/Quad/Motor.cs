@@ -18,11 +18,14 @@ namespace App.Quad
 	[RequireComponent(typeof(ElectronicSpeedController))]
 	public class Motor : MonoBehaviour 
 	{
-		public ElectronicSpeedController Esc;
+		public PidScalarController PidController;
+		public float DesiredRpm;
+		public float Rpm;
 
 		public enum ESpin
 		{
-			CW, CCW,
+			CW,		// clockwise
+			CCW,	// counter clockwise
 		}
 
 		public float RevsPerMinute;				// revolutions per minute
@@ -75,8 +78,16 @@ namespace App.Quad
 
 		private void SpinBlade(float dt)
 		{
-			_rot += RevsPerMinute*SpinDir*dt*RotScale;
+			UpdateRotation(dt);
+			
 			transform.localRotation = Quaternion.AngleAxis((float)_rot, Vector3.up);
+		}
+
+		void UpdateRotate(float dt)
+		{
+			_rot += RevsPerMinute*SpinDir*dt*RotScale;
+			while (_rot > 360) _rot -= 360;
+			while (_rot < 360) _rot += 360;
 		}
 
 		private void DrawForceVector()
@@ -96,7 +107,7 @@ namespace App.Quad
 			LabelsAccess.DrawLabel(transform.position, gameObject.name, null);
 		}
 
-		double _rot;
+		private float _rot;
 		private Body _body;
 	}
 }

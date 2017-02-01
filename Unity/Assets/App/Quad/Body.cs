@@ -16,11 +16,25 @@ namespace App.Quad
 {
 	public class Body : MonoBehaviour 
 	{
+		public FlightController FlightController;
 		public GameObject CenterOfMass;
+
+		int TraceLevel = 2;
+
+		void Awake()
+		{
+			FlightController = GetComponentInChildren<FlightController>();
+			Assert.IsNotNull(FlightController);
+		}
 
 		private void Update()
 		{
-			DebugGraph.Log("height", transform.position.y);
+			if (TraceLevel < 1) return;
+
+			// var euler = FlightController.GyroSensor.Orientation.eulerAngles;
+			// DebugGraph.Log("pitch", euler.x);
+			// DebugGraph.Log("yaw", euler.y);
+			// DebugGraph.Log("roll", euler.z);
 		}
 	}
 }

@@ -20,7 +20,6 @@ namespace App.Quad
 		public Transmitter Transmitter;
 
 		public Motor FL, FR, RL, RR;
-		public Motor[] Motors { get { return _motors; } }
 
 		public float[] MotorRpms = new float[4];
 
@@ -36,7 +35,6 @@ namespace App.Quad
 			Height = 2,
 			Speed = 4,
 		}
-
 		public EConstraints[] Constraints = new EConstraints[4];
 
 		public enum EMode
@@ -48,34 +46,41 @@ namespace App.Quad
 			CircleAround,
 			FollowPath,
 		}
-
 		public EMode Mode;
 
 		public float DesiredHeight;
 
-		public Vector3[] PidControllerPIDs = new Vector3[4];
-		public PidController[] PidControllers = new PidController[4];
+		public Vector3 DefaultMotorPidValues = new Vector3(0.8f, 0.5f, 0.1f);
+		public Motor[] Motors;
 
 		public Vector3 QuaternionControllerPID = new Vector3(.4f, .2f, .01f);
 		public PidQuaternionController PidQuaternionController;
+
+		public Sensor.GyroscopeSensor Gyro;
 
 		private void Awake()
 		{
 			TraceLevel = 5;
 
 			_motors = Body.GetComponentsInChildren<Motor>();
-			_rigidBody = Body.GetComponent<Rigidbody>();
+			Assert.AreEqual(_motors.Count, 4);
 
-			Assert.AreEqual(4, _motors.Length);
+			_rigidBody = Body.GetComponent<Rigidbody>();
 			Assert.IsNotNull(_rigidBody);
 
 			PidQuaternionController = new PidQuaternionController(QuaternionControllerPID.x, QuaternionControllerPID.y, QuaternionControllerPID.z);
 
+			var pid = DefaultMotorPidValues;
 			for (int n = 0; n < 4; ++n)
 			{
-				var pid = PidControllerPIDs[n];
-				PidControllers[n] = new PidController(pid.x, pid.y, pid.z);
+				Motors[n].PidController = new PidController(pid.x, pid.y, pid.z);
 			}
+
+			Gryo
+				.Pitch
+				.DistinctUntilChanged()
+				.Subscribe(p => DealWithNewPitch(p))
+				.AddTo(this);
 		}
 
 		private void Start()
@@ -196,7 +201,6 @@ namespace App.Quad
 			}
 		}
 
-		private Motor[] _motors;
 		private Rigidbody _rigidBody;
 
 		private Sensor.AccellerometerSensor _accellerometer;

@@ -216,6 +216,26 @@ Prefab:
       propertyPath: m_CollisionDetection
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4989948472165524, guid: 84a7c3c20d71e406088818efdb39bd41, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4989948472165524, guid: 84a7c3c20d71e406088818efdb39bd41, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0.38268343
+      objectReference: {fileID: 0}
+    - target: {fileID: 4989948472165524, guid: 84a7c3c20d71e406088818efdb39bd41, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4989948472165524, guid: 84a7c3c20d71e406088818efdb39bd41, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 0.92387956
+      objectReference: {fileID: 0}
+    - target: {fileID: 4989948472165524, guid: 84a7c3c20d71e406088818efdb39bd41, type: 2}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 84a7c3c20d71e406088818efdb39bd41, type: 2}
   m_IsPrefabParent: 0
