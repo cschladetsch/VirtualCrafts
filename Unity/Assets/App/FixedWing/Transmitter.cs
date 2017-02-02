@@ -38,12 +38,33 @@ namespace App.FixedWing
 		{
 		}
 
+		/*
+		W/S = THR
+		I/K = ELE
+		J/L = AIR
+		Q/E = RUD
+		*/
 		private void Update()
 		{
 			var dt = Time.deltaTime;
 
 			ReadTHR(dt);
 			ReadELE(dt);	
+			ReadAIL(dt);	
+			ReadRUD(dt);	
+		}
+
+		private void ReadRUD(float dt)
+		{
+			var scale = 0.1f;	// TODO: expo curves
+			var delta = 0.0f;
+			if (Input.GetKey(KeyCode.Q))
+				delta += scale*dt;
+			if (Input.GetKey(KeyCode.E))
+				delta -= scale*dt;
+
+			RUD += delta;
+			RUD = Mathf.Clamp01(RUD);
 		}
 
 		private void ReadTHR(float dt)
@@ -56,7 +77,7 @@ namespace App.FixedWing
 				delta -= scale*dt;
 
 			THR += delta;
-			THR = Mathf.Clamp01(THR);
+			THR = Mathf.Clamp(THR, 0, 9000);
 		}
 
 		private void ReadELE(float dt)
@@ -70,6 +91,20 @@ namespace App.FixedWing
 
 			ELE += delta;
 			ELE = Mathf.Clamp01(ELE);
+		}
+
+		// left/right on right stick of mode-2 Tx
+		private void ReadAIL(float dt)
+		{
+			var scale = 0.1f;	// TODO: expo curves
+			var delta = 0.0f;
+			if (Input.GetKey(KeyCode.J))
+				delta -= scale*dt;
+			if (Input.GetKey(KeyCode.L))
+				delta += scale*dt;
+
+			AIL += delta;
+			AIL = Mathf.Clamp01(AIL);
 		}
 
 		private void FixedUpdate()

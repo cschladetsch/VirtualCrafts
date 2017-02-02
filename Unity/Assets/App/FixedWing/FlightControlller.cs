@@ -37,9 +37,41 @@ namespace App.FixedWing
 
 		private void Update()
 		{
-			Motor.DesiredRpm = Mathf.Clamp01(Transmitter.THR)*MaxThrottleRpm;
-
+			UpdateThrottle();
 			UpdateElevators();
+			UpdateAirlerons();
+			UpdateRudder();
+		}
+
+		private void UpdateRudder()
+		{
+			var raw = Mathf.Clamp01(Transmitter.RUD);	// [0..1]
+			var scaled = raw - 0.5f;					// [-0.5..0.5]
+			Rudder.DesiredAngle = scaled*2*Rudder.MaxThrow;
+		}
+
+		private void UpdateAirlerons()
+		{
+			var raw = Mathf.Clamp01(Transmitter.AIL);	// input from Tx in [0..1] where 0.5 means centered
+			var scaled = raw - 0.5f;
+
+			// val of 0 means no throw on AIL
+			// val of -0.5 means full roll left
+			// val of 0.5 means full roll right
+
+			// share throws for both AIL
+			var maxThrow = RightAileron.MaxThrow;
+			var val = scaled*2*maxThrow;		// *2 because we can be - or + max
+
+			Assert.IsTrue(val >= -maxThrow && val <= maxThrow);
+
+			LeftAileron.DesiredAngle = val;
+			RightAileron.DesiredAngle = -val;
+		}
+
+		private void UpdateThrottle()
+		{
+			Motor.DesiredRpm = Mathf.Clamp01(Transmitter.THR)*MaxThrottleRpm;
 		}
 
 		void UpdateElevators()
