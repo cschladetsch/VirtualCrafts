@@ -36,7 +36,7 @@ namespace App.FixedWing
 
 		private void Update()
 		{
-			transform.rotation = transform.rotation*Quaternion.AngleAxis(Angle, Axis);
+			transform.localRotation = Quaternion.AngleAxis(Angle, Axis);
 		}
 
 		private void FixedUpdate()

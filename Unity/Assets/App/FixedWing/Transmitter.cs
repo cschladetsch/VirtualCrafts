@@ -41,7 +41,14 @@ namespace App.FixedWing
 		private void Update()
 		{
 			var dt = Time.deltaTime;
-			var scale = 0.1f;
+
+			ReadTHR(dt);
+			ReadELE(dt);	
+		}
+
+		private void ReadTHR(float dt)
+		{
+			var scale = 0.1f;	// TODO: expo curves
 			var delta = 0.0f;
 			if (Input.GetKey(KeyCode.W))
 				delta += scale*dt;
@@ -50,6 +57,19 @@ namespace App.FixedWing
 
 			THR += delta;
 			THR = Mathf.Clamp01(THR);
+		}
+
+		private void ReadELE(float dt)
+		{
+			var scale = 0.1f;	// TODO: expo curves
+			var delta = 0.0f;
+			if (Input.GetKey(KeyCode.I))
+				delta += scale*dt;
+			if (Input.GetKey(KeyCode.K))
+				delta -= scale*dt;
+
+			ELE += delta;
+			ELE = Mathf.Clamp01(ELE);
 		}
 
 		private void FixedUpdate()
