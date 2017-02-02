@@ -30,18 +30,14 @@ namespace App.Math
 			_controller.I = I;
 			_controller.D = D;
 			
-			var offset = _controller.Calculate(SetPoint, transform.position.z, 1.0f/10.0f);//Time.fixedDeltaTime);
-			if (_count < 100)
-				Debug.LogFormat("[{0}]: val:{1}, inc: {2}", _count++, transform.position.z, offset.ToString("F3"));
-
+			var offset = _controller.Calculate(SetPoint, transform.position.x, Time.fixedDeltaTime);
 			var p = transform.position;
-			var val = p.z + (float)offset;
-			transform.position = new Vector3(p.x, p.y, val);
+			p.x += offset*Time.fixedDeltaTime;
+			transform.position = p;
 
+			DebugGraph.Log("val", p.x);
 			DebugGraph.Log("offset", offset);
-			DebugGraph.Log("val", val);
 		}
-		int _count;
 
 		private PidScalarController _controller;
 	}

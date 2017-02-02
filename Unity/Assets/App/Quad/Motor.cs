@@ -98,8 +98,8 @@ namespace App.Quad
 
 		private void FixedUpdate()
 		{
-			var deltaRpm = PidController.Calculate(DesiredRpm, Rpm, Time.fixedDeltaTime);
-			Rpm += deltaRpm;
+			 var deltaRpm = PidController.Calculate(DesiredRpm, Rpm, Time.fixedDeltaTime);
+			 Rpm += deltaRpm*Time.fixedDeltaTime;
 		}
 
 		private void OnDrawGizmos()

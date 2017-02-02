@@ -69,26 +69,6 @@ namespace App.Quad
 			Assert.AreEqual(_motors.Length, 4);
 
 			PrepareMotors();
-
-			// PidQuaternionController = new PidQuaternionController(QuaternionControllerPID.x, QuaternionControllerPID.y, QuaternionControllerPID.z);
-
-
-			// Position
-			// 	.DistinctUntilChanged()
-			// 	.Subscribe(p => PositionChanged(p))
-			// 	.AddTo(this);
-
-			// Position
-			// 	.DistinctUntilChanged()
-			// 	.Select(p => p.y)
-			// 	.Subscribe(p => HeightChanged(p))
-			// 	.AddTo(this);
-
-			// Rotation
-			// 	.Select(r => r.eulerAngles)
-			// 	.DistinctUntilChanged()
-			// 	.Subscribe(p => EulerChanged(p))
-			// 	.AddTo(this);
 		}
 
 		private void PrepareMotors()
@@ -109,15 +89,15 @@ namespace App.Quad
 			if (TraceLevel < 3) return;
 		}
 
-		// TODO: this could all be cleaner and clearer with 
-		// a single Flow.Channel<AppliedForce> given to a
-		// number of coros.
-
+		private void FixedUpdate()
+		{
+			RunFlightController();
+		}
 
 		public float AngleScale = 1;
 		public float HeightScale = 2;
 
-		private void FixedUpdate()
+		void RunFlightController()
 		{
 			var frame = new Frame(transform);
 			var delta = frame - _thisFrame;
@@ -212,60 +192,23 @@ namespace App.Quad
 			{
 				m.DesiredRpm += heightScale;
 			}
-
-			var pp = Body.transform.position;
-			pp.y = 5;
-			Body.transform.position = pp;
 		}
 
 		public float AngleToRpmCorrection = 1;
-		void Balance(Vector3 dir, float angle)
+
+		void DrawBalanceBalance(Vector3 dir, float angle)
 		{
 			DebugGraph.Log("balx", dir.x);
 			DebugGraph.Log("baly", dir.y);
 			DebugGraph.Log("balz", dir.z);
 			DebugGraph.Log("angle", angle);
-
-/*
-			var aFL = Vector3.Angle(Vector3.right, dir);
-			var aFR = Vector3.Angle(Vector3.right, dir);
-			var aRL = Vector3.Angle(Vector3.right, dir);
-			var aRR = Vector3.Angle(Vector3.right, dir);
-
-			
-			var s = AngleToRpmCorrection;
-			var a = angle*s/2;
-			if (aFL > aFR)
-			{
-				if (aFL > aRL)
-				{
-					if (aFL > aRR)
-					{
-						FL.DesiredRpm -= a;
-						RR.DesiredRpm += a;
-						return;
-					}
-
-					RR.DesiredRpm -= a;
-					FL.DesiredRpm += a;
-					return;
-				}
-
-				FL.DesiredRpm -= a;
-				RR.DesiredRpm += a;
-				return;
-			}
-
-			FL.DesiredRpm -= a;
-			RR.DesiredRpm += a;
-			*/
 		}
 
 		struct Angles
 		{
 			public Vector3 Axes;
 
-			public Angles(Transform tr)//, Quaternion dir)
+			public Angles(Transform tr)
 			{
 				Axes = tr.rotation.eulerAngles;
 			}

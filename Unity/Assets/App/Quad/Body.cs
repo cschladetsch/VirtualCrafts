@@ -121,20 +121,6 @@ namespace App.Quad
 			Debug.DrawLine(center, center + torque*ForceGizmoScale, Color.blue, 0, false);
 		}
 
-		struct AppliedForce
-		{
-			public Vector3 Force;
-			public Vector3 Torque;
-			public Vector3 Where;
-
-			public AppliedForce(Vector3 f, Vector3 w, Vector3 t)
-			{
-				Force = f;
-				Where = w;
-				Torque = t;
-			}
-		}
-
 		private Rigidbody _rigidBody;
 	}
 }
