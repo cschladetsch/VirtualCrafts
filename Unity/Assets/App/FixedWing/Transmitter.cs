@@ -16,7 +16,7 @@ namespace App.FixedWing
 {
 	public class Transmitter : MonoBehaviour 
 	{
-		public enum EChanel
+		public enum EChannel
 		{
 			THR,
 			AIL,
@@ -29,6 +29,8 @@ namespace App.FixedWing
 		public float AIL;
 		public float ELE;
 		public float RUD;
+
+		public AnimationCurve[] Expos = new AnimationCurve[4];
 
 		private void Awake()
 		{
@@ -56,7 +58,7 @@ namespace App.FixedWing
 
 		private void ReadRUD(float dt)
 		{
-			var scale = 0.1f;	// TODO: expo curves
+			var scale = GetScale(EChannel.RUD, RUD);
 			var delta = 0.0f;
 			if (Input.GetKey(KeyCode.Q))
 				delta += scale*dt;
@@ -69,7 +71,7 @@ namespace App.FixedWing
 
 		private void ReadTHR(float dt)
 		{
-			var scale = 0.1f;	// TODO: expo curves
+			var scale = GetScale(EChannel.THR, THR);
 			var delta = 0.0f;
 			if (Input.GetKey(KeyCode.W))
 				delta += scale*dt;
@@ -82,7 +84,7 @@ namespace App.FixedWing
 
 		private void ReadELE(float dt)
 		{
-			var scale = 0.1f;	// TODO: expo curves
+			var scale = GetScale(EChannel.ELE, ELE);
 			var delta = 0.0f;
 			if (Input.GetKey(KeyCode.I))
 				delta += scale*dt;
@@ -96,7 +98,7 @@ namespace App.FixedWing
 		// left/right on right stick of mode-2 Tx
 		private void ReadAIL(float dt)
 		{
-			var scale = 0.1f;	// TODO: expo curves
+			var scale = GetScale(EChannel.AIL, AIL);
 			var delta = 0.0f;
 			if (Input.GetKey(KeyCode.J))
 				delta -= scale*dt;
@@ -105,6 +107,12 @@ namespace App.FixedWing
 
 			AIL += delta;
 			AIL = Mathf.Clamp01(AIL);
+		}
+
+		private float GetScale(EChannel channel, float cur)
+		{
+			var curve = Expos[(int)channel];
+			return curve.Evaluate(cur);
 		}
 
 		private void FixedUpdate()
