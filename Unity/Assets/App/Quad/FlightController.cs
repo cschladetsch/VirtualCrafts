@@ -99,8 +99,8 @@ namespace App.Quad
 
 		void RunFlightController()
 		{
-			var frame = new Frame(transform);
-			var delta = frame - _thisFrame;
+			// var frame = new Frame(transform);
+			// var delta = frame - _thisFrame;
 			// var deltaDelta = _thisFrame - _lastFrame;
 
 			// find world vectors for each motor position
@@ -219,7 +219,7 @@ namespace App.Quad
 		}
 
 		Frame _lastFrame;
-		Frame _thisFrame;
+		// Frame _thisFrame;
 		FrameDelta _deltaFrame;
 
 		private Motor[] _motors;
