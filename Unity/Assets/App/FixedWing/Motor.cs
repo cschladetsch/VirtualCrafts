@@ -22,7 +22,7 @@ namespace App.FixedWing
 		private void Update()
 		{
 			_rot += Time.deltaTime*6.0f*Rpm*RotGizmoScale;
-			transform.localRotation = Quaternion.AngleAxis(_rot, Vector3.forward);
+			transform.localRotation = Quaternion.AngleAxis(_rot, -Vector3.forward);
 		}
 
 		private void FixedUpdate()

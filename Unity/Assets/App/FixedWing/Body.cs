@@ -49,6 +49,7 @@ namespace App.FixedWing
 		void UpdateForces()
 		{
 			var forces = MotorForces().Union(ControlSurfaces());
+//			var forces = ControlSurfaces();
 			foreach (var f in forces)
 			{
 				_rigidBody.AddForceAtPosition(f.Force, f.Where, ForceMode.Impulse);

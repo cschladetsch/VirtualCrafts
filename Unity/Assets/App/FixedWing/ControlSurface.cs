@@ -12,6 +12,8 @@ using App.Utils;
 
 using UniRx;
 
+using ChaosCult.SceneLabels;
+
 namespace App.FixedWing
 {
 	// a general control surface on the model
@@ -34,6 +36,14 @@ namespace App.FixedWing
 		public float RpmCurveScale = 1;
 		public ForceProvider ForceProvider;
 
+		public float ForceDrawScale = 2;
+		public int TraceLevel;
+
+		void Awake()
+		{
+			TraceLevel = 1;
+		}
+
 		public void Construct(Body body)
 		{
 			_body = body;
@@ -43,6 +53,12 @@ namespace App.FixedWing
 		private void Update()
 		{
 			transform.localRotation = Quaternion.AngleAxis(Angle, Axis);
+
+			if (TraceLevel > 1) 
+				Debug.DrawLine(
+					ForceProvider.Where, 
+					ForceProvider.Where + ForceProvider.Force*ForceDrawScale, 
+					Color.blue, 0, false);
 		}
 
 		private void FixedUpdate()
@@ -60,7 +76,7 @@ namespace App.FixedWing
 
 			float dt = Time.fixedDeltaTime;
 			var delta = Controller.Calculate(DesiredAngle, Angle, dt);
-			Angle += delta;//*dt;
+			Angle += delta;
 			Angle = Mathf.Clamp(Angle, -MaxThrow, MaxThrow);
 			ForceProvider.transform.localRotation = Quaternion.AngleAxis(Angle, Axis);
 		}
@@ -68,11 +84,18 @@ namespace App.FixedWing
 		private void ChangeMagnitude()
 		{
 			var motor = _body.FlightController.Motor;
-			if (motor.Rpm <= 0)
-				return;
-
 			var mag = RpmCurveScale*RpmRelative.Evaluate(Mathf.Clamp01(motor.Rpm/motor.MaxThrottleRpm)); 
 			ForceProvider.Magnitude = mag;
+		}
+
+		/// <summary>
+		/// Callback to draw gizmos that are pickable and always drawn.
+		/// </summary>
+		void OnDrawGizmos()
+		{
+			var fp = ForceProvider;
+			// LabelsAccess.DrawLabel(fp.Where, fp.Where + ForceProvider.Force.ToString(), null);
+			LabelsAccess.DrawLabel(gameObject, Angle.ToString(), null);
 		}
 
 		private Body _body;
