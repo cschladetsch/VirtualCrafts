@@ -38,6 +38,8 @@ namespace App.FixedWing
 			Rpm = Mathf.Clamp(Rpm, 0, MaxThrottleRpm);
 
 			DebugGraph.Log("Rpm", Rpm);
+
+			ForceProvider.Magnitude = Rpm*RpmScale;
 		}
 
 		private float _rot;

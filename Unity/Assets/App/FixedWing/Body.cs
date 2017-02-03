@@ -21,15 +21,17 @@ namespace App.FixedWing
 		{
 			TraceLevel = 1;
 
+			FlightController = transform.parent.GetComponentInChildren<FlightController>();
+			_motors = GetComponentsInChildren<Motor>().ToList();
 			_controlSurfaces = GetComponentsInChildren<ControlSurface>().ToList();
 			_rigidBody = GetComponent<Rigidbody>();
-			FlightController = transform.parent.GetComponentInChildren<FlightController>();
 
-			Assert.IsTrue(_controlSurfaces.Count > 0);
+			//Assert.IsTrue(_controlSurfaces.Count > 0);
 			Assert.IsNotNull(FlightController);
 			Assert.IsNotNull(_rigidBody);
 
 			Debug.Log("There are " + _controlSurfaces.Count + " force providers");
+
 
 			foreach (var f in _controlSurfaces)
 			{
@@ -46,24 +48,21 @@ namespace App.FixedWing
 
 		void UpdateForces()
 		{
-			Vector3 forceSum = Vector3.zero;
-			Vector3 whereSum = Vector3.zero;
-
-			foreach (var f in _controlSurfaces)
+			var forces = MotorForces().Union(ControlSurfaces());
+			foreach (var f in forces)
 			{
-				var fp = f.ForceProvider;
-				_rigidBody.AddForceAtPosition(fp.Force, fp.Where);
-
-				forceSum += fp.Force;
-				whereSum += fp.Where;
+				_rigidBody.AddForceAtPosition(f.Force, f.Where, ForceMode.Impulse);
 			}
+		}
 
-			var count = (float)_controlSurfaces.Count;
-			forceSum /= count;
-			whereSum /= count;
+		IEnumerable<ForceProvider> MotorForces()
+		{
+			return _motors.Select(m => m.ForceProvider);
+		}
 
-			// var com = CenterOfMass.position;
-			Debug.DrawLine(whereSum, whereSum + forceSum*ForceGizmoScale, Color.magenta, 0);
+		IEnumerable<ForceProvider> ControlSurfaces()
+		{
+			return _controlSurfaces.Select(cp => cp.ForceProvider);
 		}
 
 		void DrawForces()
@@ -72,6 +71,7 @@ namespace App.FixedWing
 
 		private Rigidbody _rigidBody;
 		private List<ControlSurface> _controlSurfaces = new List<ControlSurface>();
+		private List<Motor> _motors = new List<Motor>();
 	}
 }
 
