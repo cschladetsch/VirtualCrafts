@@ -12,8 +12,8 @@ namespace App.FixedWing
     public class Body : MonoBehaviour 
 	{
 		public Transform CenterOfMass;
+		public FlightController FlightController;
 		public float ForceGizmoScale = 2;
-
 
 		public int TraceLevel;
 
@@ -21,26 +21,20 @@ namespace App.FixedWing
 		{
 			TraceLevel = 1;
 
-			_forces = GetComponentsInChildren<ForceProviderBehaviour>().ToList();
+			_controlSurfaces = GetComponentsInChildren<ControlSurface>().ToList();
 			_rigidBody = GetComponent<Rigidbody>();
+			FlightController = transform.parent.GetComponentInChildren<FlightController>();
 
-			foreach (var f in _forces)
+			Assert.IsTrue(_controlSurfaces.Count > 0);
+			Assert.IsNotNull(FlightController);
+			Assert.IsNotNull(_rigidBody);
+
+			Debug.Log("There are " + _controlSurfaces.Count + " force providers");
+
+			foreach (var f in _controlSurfaces)
 			{
 				f.Construct(this);
 			}
-
-			Assert.IsTrue(_forces.Count > 0);
-			Assert.IsNotNull(_rigidBody);
-
-			Debug.Log("There are " + _forces.Count + " force providers");
-		}
-
-		private void Start()
-		{
-		}
-
-		private void Update()
-		{
 		}
 
 		private void FixedUpdate()
@@ -55,15 +49,16 @@ namespace App.FixedWing
 			Vector3 forceSum = Vector3.zero;
 			Vector3 whereSum = Vector3.zero;
 
-			foreach (var f in _forces)
+			foreach (var f in _controlSurfaces)
 			{
-				_rigidBody.AddForceAtPosition(f.Force.Force, f.Force.Where);
+				var fp = f.ForceProvider;
+				_rigidBody.AddForceAtPosition(fp.Force, fp.Where);
 
-				forceSum += f.Force.Force;
-				whereSum += f.Force.Where;
+				forceSum += fp.Force;
+				whereSum += fp.Where;
 			}
 
-			var count = (float)_forces.Count;
+			var count = (float)_controlSurfaces.Count;
 			forceSum /= count;
 			whereSum /= count;
 
@@ -73,11 +68,10 @@ namespace App.FixedWing
 
 		void DrawForces()
 		{
-
 		}
 
 		private Rigidbody _rigidBody;
-		private List<ForceProviderBehaviour> _forces = new List<ForceProviderBehaviour>();
+		private List<ControlSurface> _controlSurfaces = new List<ControlSurface>();
 	}
 }
 

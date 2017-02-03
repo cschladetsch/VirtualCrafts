@@ -14,33 +14,45 @@ using UniRx;
 
 namespace App.FixedWing
 {
-	public class ControlSurface : ForceProviderBehaviour
+	// a general control surface on the model
+	public class ControlSurface : MonoBehaviour
 	{
+		// the axis that it rotates around
 		public Vector3 Axis;
+
+		// maximum angle in degrees
 		public float MaxThrow = 30;
+
+		// controller
 		public Vector3 Pid = new Vector3(0.8f, 0.5f, 0.01f);
 		public PidScalarController Controller = new PidScalarController();
 		public float DesiredAngle;
 		public float Angle;
-		public Transform ForceApplication;
 
-		public AppliedForce AppliedForce;
+		// how the force provided by this surface relates to the motor rpm
+		public AnimationCurve RpmRelative = new AnimationCurve();
+		public float RpmCurveScale = 1;
+		public ForceProvider ForceProvider;
 
-		private void Awake()
+		public void Construct(Body body)
 		{
-		}
-
-		private void Start()
-		{
+			_body = body;
+			ForceProvider = GetComponentInChildren<ForceProvider>();
 		}
 
 		private void Update()
 		{
-			DrawForce();
 			transform.localRotation = Quaternion.AngleAxis(Angle, Axis);
 		}
 
 		private void FixedUpdate()
+		{
+			ChangeAngle();
+
+			ChangeMagnitude();
+		}
+
+		void ChangeAngle()
 		{
 			Controller.P = Pid.x;
 			Controller.I = Pid.y;
@@ -48,19 +60,22 @@ namespace App.FixedWing
 
 			float dt = Time.fixedDeltaTime;
 			var delta = Controller.Calculate(DesiredAngle, Angle, dt);
-			Angle += delta*dt;
-
+			Angle += delta;//*dt;
 			Angle = Mathf.Clamp(Angle, -MaxThrow, MaxThrow);
-			var rot = Quaternion.AngleAxis(Angle, Axis);
-			var motor = _flightController.Motor;
+			ForceProvider.transform.localRotation = Quaternion.AngleAxis(Angle, Axis);
+		}
+
+		private void ChangeMagnitude()
+		{
+			var motor = _body.FlightController.Motor;
 			if (motor.Rpm <= 0)
 				return;
 
-			var mag = RpmRelative.Evaluate(Mathf.Clamp01(motor.Rpm/motor.MaxThrottleRpm)); 
-			AppliedForce = new AppliedForce(
-				rot.eulerAngles*mag,
-				ForceApplication.position);
+			var mag = RpmCurveScale*RpmRelative.Evaluate(Mathf.Clamp01(motor.Rpm/motor.MaxThrottleRpm)); 
+			ForceProvider.Magnitude = mag;
 		}
+
+		private Body _body;
 	}
 }
 
