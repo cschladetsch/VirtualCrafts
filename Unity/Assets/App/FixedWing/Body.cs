@@ -52,7 +52,7 @@ namespace App.FixedWing
 //			var forces = ControlSurfaces();
 			foreach (var f in forces)
 			{
-				_rigidBody.AddForceAtPosition(f.Force, f.Where, ForceMode.Impulse);
+				_rigidBody.AddForceAtPosition(f.Position, f.Where, ForceMode.Impulse);
 			}
 		}
 

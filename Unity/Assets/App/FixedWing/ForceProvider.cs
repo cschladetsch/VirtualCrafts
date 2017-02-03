@@ -18,25 +18,25 @@ namespace App.FixedWing
 	{
 		public Color Color = Color.magenta;
 		public float Magnitude;
+		public float GizmodMagnitude;
 		public Vector3 Torque;
 
 		public Vector3 Where { get { return transform.position; } }
-		public Vector3 Force { get { return transform.forward*Magnitude; } }
+		public Vector3 Position { get { return transform.forward*Magnitude; } }
 
 		public int TraceLevel = 1;
-
-		private void Awake()
-		{
-			TraceLevel = 1;
-		}
 
 		private void Update()
 		{
 			if (TraceLevel > 0) 
+			{
 				Debug.DrawLine(
 					transform.position, 
-					transform.position + transform.forward*Magnitude, 
+					transform.position + transform.forward*Magnitude*GizmodMagnitude, 
 					Color, 0);
+				DebugGraph.Log("RUD", Position*Magnitude);
+			}
+
 		}
 
 		private void FixedUpdate()

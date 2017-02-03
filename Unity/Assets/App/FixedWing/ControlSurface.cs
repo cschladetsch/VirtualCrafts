@@ -57,7 +57,7 @@ namespace App.FixedWing
 			if (TraceLevel > 1) 
 				Debug.DrawLine(
 					ForceProvider.Where, 
-					ForceProvider.Where + ForceProvider.Force*ForceDrawScale, 
+					ForceProvider.Where + ForceProvider.Position*ForceDrawScale, 
 					Color.blue, 0, false);
 		}
 
