@@ -8,6 +8,7 @@ namespace App.FixedWing
     public class Motor : ForceProviderBehaviour
 	{
 		public float DesiredRpm;
+		public float MaxThrottleRpm;
 		public float Rpm;
 		public PidScalarController PidController = new PidScalarController();
 		public Vector3 PID = new Vector3(0.8f, 0.5f, 0.01f);
@@ -35,8 +36,9 @@ namespace App.FixedWing
 		private void Update()
 		{
 			_rot += Time.deltaTime*6.0f*Rpm*RotGizmoScale;
-
 			transform.localRotation = Quaternion.AngleAxis(_rot, Vector3.forward);
+
+			DrawForce();
 		}
 
 		private void FixedUpdate()
@@ -46,8 +48,10 @@ namespace App.FixedWing
 			PidController.D = PID.z;
 
 			var dt = Time.fixedDeltaTime;
-			var change = PidController.Calculate(DesiredRpm, Rpm, dt);
+			var change = PidController.Calculate(DesiredRpm*MaxThrottleRpm, Rpm, dt);
 			Rpm += change*dt;
+
+			DebugGraph.Log("Rpm", Rpm);
 		}
 
 		private float _rot;

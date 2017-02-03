@@ -22,7 +22,7 @@ namespace App.Quad
 		public Motor[] Motors { get { return FlightController.Motors; } }
 
 		public float ForceGizmoScale = 5;
-		static int TraceLevel = 2;
+		public int TraceLevel = 2;
 
 		void Awake()
 		{

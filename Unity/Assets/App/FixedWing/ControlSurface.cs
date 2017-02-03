@@ -36,6 +36,7 @@ namespace App.FixedWing
 
 		private void Update()
 		{
+			DrawForce();
 			transform.localRotation = Quaternion.AngleAxis(Angle, Axis);
 		}
 
@@ -50,6 +51,15 @@ namespace App.FixedWing
 			Angle += delta*dt;
 
 			Angle = Mathf.Clamp(Angle, -MaxThrow, MaxThrow);
+			var rot = Quaternion.AngleAxis(Angle, Axis);
+			var motor = _flightController.Motor;
+			if (motor.Rpm <= 0)
+				return;
+
+			var mag = RpmRelative.Evaluate(Mathf.Clamp01(motor.Rpm/motor.MaxThrottleRpm)); 
+			AppliedForce = new AppliedForce(
+				rot.eulerAngles*mag,
+				ForceApplication.position);
 		}
 	}
 }

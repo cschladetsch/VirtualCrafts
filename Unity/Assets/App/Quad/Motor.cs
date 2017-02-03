@@ -35,7 +35,7 @@ namespace App.Quad
 		public float ForceGizmoScale = 5;		// just used for render force gizmo lines
 		public float RotScale = 6;				// 360/60 = 6. this means shows real rotational speed
 
-		public static int TraceLevel = 3;
+		public int TraceLevel = 3;
 
 		// world-space torque turning force
 		public Vector3 WorldTorque

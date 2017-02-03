@@ -32,8 +32,11 @@ namespace App.FixedWing
 
 		public AnimationCurve[] Expos = new AnimationCurve[4];
 
+		public int TraceLevel;
+
 		private void Awake()
 		{
+			TraceLevel = 0;
 		}
 
 		private void Start()
@@ -54,6 +57,16 @@ namespace App.FixedWing
 			ReadELE(dt);	
 			ReadAIL(dt);	
 			ReadRUD(dt);	
+
+			if (TraceLevel > 1) DrawGraphs();
+		}
+
+		void DrawGraphs()
+		{
+			DebugGraph.Log("THR", THR);
+			DebugGraph.Log("RUD", RUD);
+			DebugGraph.Log("ELE", ELE);
+			DebugGraph.Log("AIL", AIL);
 		}
 
 		private void ReadRUD(float dt)
@@ -79,7 +92,7 @@ namespace App.FixedWing
 				delta -= scale*dt;
 
 			THR += delta;
-			THR = Mathf.Clamp(THR, 0, 9000);
+			THR = Mathf.Clamp01(THR);
 		}
 
 		private void ReadELE(float dt)

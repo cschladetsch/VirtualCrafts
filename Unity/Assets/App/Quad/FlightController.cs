@@ -18,13 +18,9 @@ namespace App.Quad
 	{
 		public Body Body;
 		public Transmitter Transmitter;
-
 		public Motor FL, FR, RL, RR;
-
 		public float[] MotorRpms = new float[4];
-
-
-		private static int TraceLevel;
+		public int TraceLevel;
 
 		[Flags]
 		public enum EConstraints

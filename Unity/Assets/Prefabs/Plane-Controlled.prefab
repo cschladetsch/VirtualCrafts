@@ -153,7 +153,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4046506621962414}
   - component: {fileID: 114068142914515204}
-  - component: {fileID: 114646959150684844}
   m_Layer: 12
   m_Name: Right-Airleron
   m_TagString: Untagged
@@ -1475,9 +1474,9 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
-  Axis: {x: 0, y: 0, z: 0}
+  Axis: {x: 1, y: 0, z: 0}
   MaxThrow: 30
-  Pid: {x: 0.8, y: 0.5, z: 0.01}
+  Pid: {x: 0.8, y: 0.4, z: 0.01}
   DesiredAngle: 0
   Angle: 0
   ForceApplication: {fileID: 4055470077082616}
@@ -1495,11 +1494,10 @@ MonoBehaviour:
   Transmitter: {fileID: 0}
   Motor: {fileID: 114279237270213554}
   LeftAileron: {fileID: 114324655009069572}
-  RightAileron: {fileID: 114646959150684844}
+  RightAileron: {fileID: 114068142914515204}
   Rudder: {fileID: 114905973206055858}
   LeftElevator: {fileID: 114508788729657104}
   RightElevator: {fileID: 114182070278508702}
-  MaxThrottleRpm: 2000
 --- !u!114 &114182070278508702
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1531,7 +1529,7 @@ MonoBehaviour:
     m_RotationOrder: 0
   Axis: {x: 1, y: 0, z: 0}
   MaxThrow: 30
-  Pid: {x: 0.8, y: 0.5, z: 0.01}
+  Pid: {x: 0.8, y: 0.4, z: 0.01}
   DesiredAngle: 0
   Angle: 0
   ForceApplication: {fileID: 4336426923238532}
@@ -1553,10 +1551,11 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   DesiredRpm: 0
+  MaxThrottleRpm: 9000
   Rpm: 0
   PID: {x: 0.8, y: 0, z: 0}
   RotGizmoScale: 0.05
-  RpmScale: 0.01
+  RpmScale: 0.001
 --- !u!114 &114312735532322424
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1568,6 +1567,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db1de9c2149494f7a88ff35d1ed184c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CenterOfMass: {fileID: 4580563764168744}
+  ForceGizmoScale: 2
 --- !u!114 &114324655009069572
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1599,7 +1600,7 @@ MonoBehaviour:
     m_RotationOrder: 0
   Axis: {x: 1, y: 0, z: 0}
   MaxThrow: 30
-  Pid: {x: 0.8, y: 0.5, z: 0.01}
+  Pid: {x: 0.8, y: 0.4, z: 0.01}
   DesiredAngle: 0
   Angle: 0
   ForceApplication: {fileID: 4720756565275406}
@@ -1634,33 +1635,10 @@ MonoBehaviour:
     m_RotationOrder: 0
   Axis: {x: 1, y: 0, z: 0}
   MaxThrow: 30
-  Pid: {x: 0.8, y: 0.5, z: 0.01}
+  Pid: {x: 0.8, y: 0.4, z: 0.01}
   DesiredAngle: 0
   Angle: 0
   ForceApplication: {fileID: 4336426923238532}
---- !u!114 &114646959150684844
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1335806338112038}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 703db9b812bca47a7b4bb2c7a48d1174, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  RpmRelative:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  Axis: {x: 1, y: 0, z: 0}
-  MaxThrow: 30
-  Pid: {x: 0.8, y: 0.5, z: 0.01}
-  DesiredAngle: 0
-  Angle: 0
-  ForceApplication: {fileID: 0}
 --- !u!114 &114905973206055858
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1678,21 +1656,21 @@ MonoBehaviour:
     - serializedVersion: 2
       time: 0
       value: 0
-      inSlope: 1
-      outSlope: 1
+      inSlope: 9.802616
+      outSlope: 9.802616
       tangentMode: 34
     - serializedVersion: 2
-      time: 1
-      value: 1
-      inSlope: 1
-      outSlope: 1
+      time: 0.099868864
+      value: 0.97897613
+      inSlope: 9.802616
+      outSlope: 9.802616
       tangentMode: 34
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
   Axis: {x: 0, y: 1, z: 0}
   MaxThrow: 30
-  Pid: {x: 0.8, y: 0.5, z: 0.01}
+  Pid: {x: 0.8, y: 0.4, z: 0.01}
   DesiredAngle: 0
   Angle: 0
   ForceApplication: {fileID: 4147816954113912}

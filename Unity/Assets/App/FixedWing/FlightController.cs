@@ -14,7 +14,7 @@ using UniRx;
 
 namespace App.FixedWing
 {
-	public class FlightControlller : MonoBehaviour 
+	public class FlightController : MonoBehaviour 
 	{
 		public Transmitter Transmitter;
 
@@ -25,10 +25,11 @@ namespace App.FixedWing
 		public ControlSurface LeftElevator;
 		public ControlSurface RightElevator;
 
-		public float MaxThrottleRpm = 2000;
-		
+		public int TraceLevel;
+
 		private void Awake()
 		{
+			TraceLevel = 1;
 		}
 
 		private void Start()
@@ -41,6 +42,17 @@ namespace App.FixedWing
 			UpdateElevators();
 			UpdateAirlerons();
 			UpdateRudder();
+
+			if (TraceLevel > 1) DrawGraphs();
+		}
+
+		void DrawGraphs()
+		{
+			DebugGraph.Log("Rpm", Motor.Rpm);
+			DebugGraph.Log("LeftAil", LeftAileron.Angle);
+			DebugGraph.Log("RightAil", RightAileron.Angle);
+			DebugGraph.Log("Rudder", Rudder.Angle);
+			DebugGraph.Log("Elevator", LeftElevator.Angle);
 		}
 
 		private void UpdateRudder()
@@ -71,7 +83,8 @@ namespace App.FixedWing
 
 		private void UpdateThrottle()
 		{
-			Motor.DesiredRpm = Mathf.Clamp01(Transmitter.THR)*MaxThrottleRpm;
+			var max = Motor.MaxThrottleRpm;
+			Motor.DesiredRpm = Mathf.Clamp(Transmitter.THR, 0, max);
 		}
 
 		void UpdateElevators()
