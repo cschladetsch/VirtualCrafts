@@ -8,7 +8,7 @@ using UnityEngine.Assertions;
 
 namespace App.Network
 {
-	public class AsyncNetworClient
+	public class AsyncNetworkClient : MonoBehaviour
 	{
 		public int Port = 11000;
 		public string IpAddress = "192.168.0.2";

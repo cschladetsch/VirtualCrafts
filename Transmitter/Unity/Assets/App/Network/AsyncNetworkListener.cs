@@ -8,56 +8,79 @@ using UnityEngine;
 
 namespace App.Network
 {
-    public class AsyncNetworkListener
+    public class AsyncNetworkListener : MonoBehaviour
     {
-        public int ListenPort = 11000;
+        public int ListenPort = 11002;
 
-        public ManualResetEvent allDone = new ManualResetEvent(false);
+        public ManualResetEvent clientFound = new ManualResetEvent(false);
+
+        private Socket _listener;
 
         private void Awake()
         {
             StartListening();
         }
 
+        void OnApplicationQuit()
+        {
+            _listener.Shutdown(SocketShutdown.Both);
+            _listener.Close();
+        }
+
+        IPAddress GetLocalAddress()
+        {
+            var hosts = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (var address in hosts.AddressList)
+            {
+                if (address.AddressFamily == AddressFamily.InterNetwork) 
+                {
+                    return address;
+                }
+            }
+
+            return null;
+        }
+
         public void StartListening()
         {
-            // Data buffer for incoming data.
-            // byte[] bytes = new Byte[1024];
+            var local = GetLocalAddress();
+            if (local == null)
+            {
+                Debug.LogError("Not about to find an IP4 local address");
+                clientFound.Close();
+                return;
+            }
 
-            // Establish the local endpoint for the socket.
-            // The DNS name of the computer
-            // running the listener is "host.contoso.com".
-            IPHostEntry ipHostInfo = Dns.Resolve(Dns.GetHostName());
-            IPAddress ipAddress = ipHostInfo.AddressList[0];
-            IPEndPoint localEndPoint = new IPEndPoint(ipAddress, ListenPort);
+            IPEndPoint localEndPoint = new IPEndPoint(local, ListenPort);
 
             // Create a TCP/IP socket.
-            Socket listener = new Socket(AddressFamily.InterNetwork,
+            _listener = new Socket(AddressFamily.InterNetwork,
                 SocketType.Stream, ProtocolType.Tcp );
 
             // Bind the socket to the local endpoint and listen for incoming connections.
             try 
             {
-                listener.Bind(localEndPoint);
-                listener.Listen(100);
+                _listener.Bind(localEndPoint);
+                _listener.Listen(100);
 
                 while (true) 
                 {
-                    // Set the event to nonsignaled state.
-                    allDone.Reset();
-
                     // Start an asynchronous socket to listen for connections.
-                    Console.WriteLine("Waiting for a connection...");
-                    listener.BeginAccept(
+                    Debug.LogFormat("Waiting for a connection...");
+
+                    // Set the event to nonsignaled state.
+                    clientFound.Reset();
+
+                    var asyncResult = _listener.BeginAccept(
                         new AsyncCallback(AcceptCallback),
-                        listener );
+                        _listener);
 
                     // Wait until a connection is made before continuing.
-                    allDone.WaitOne();
+                    clientFound.WaitOne();
                 }
 
             } catch (Exception e) {
-                Console.WriteLine(e.ToString());
+                Debug.LogException(e, null);
             }
 
             Debug.Log("Tcp Listener ends");
@@ -66,7 +89,7 @@ namespace App.Network
         public void AcceptCallback(IAsyncResult ar)
         {
             // Signal the main thread to continue.
-            allDone.Set();
+            clientFound.Set();
 
             // Get the socket that handles the client request.
             Socket listener = (Socket) ar.AsyncState;
@@ -102,7 +125,7 @@ namespace App.Network
                 if (content.IndexOf("<EOF>") > -1) {
                     // All the data has been read from the
                     // client. Display it on the console.
-                    Console.WriteLine("Read {0} bytes from socket. \n Data : {1}",
+                    Debug.LogFormat("Read {0} bytes from socket. \n Data : {1}",
                         content.Length, content );
                     // Echo the data back to the client.
                     Send(handler, content);
@@ -132,13 +155,13 @@ namespace App.Network
 
                 // Complete sending the data to the remote device.
                 int bytesSent = handler.EndSend(ar);
-                Console.WriteLine("Sent {0} bytes to client.", bytesSent);
+                Debug.LogFormat("Sent {0} bytes to client.", bytesSent);
 
                 handler.Shutdown(SocketShutdown.Both);
                 handler.Close();
 
             } catch (Exception e) {
-                Console.WriteLine(e.ToString());
+				Debug.LogException(e, null);
             }
         }
 
