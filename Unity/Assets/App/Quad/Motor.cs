@@ -53,7 +53,7 @@ namespace App.Quad
 		}
 
 		// the world-space thrust supplied by the rotor attached to the motor
-		public Vector3 WorldForce { get { return transform.up*Rpm*ForceMultiPlier; } }
+		public Vector3 WorldForce { get { return transform.forward*Rpm*ForceMultiPlier; } }
 
 		// direction of the motor - clockwise or counter-clockwise
 		public float SpinDir { get { return SpinDirection == ESpin.CW ? -1 : 1; } }
@@ -91,9 +91,9 @@ namespace App.Quad
 		private void DrawForceVector()
 		{
 			Debug.DrawLine(transform.position, transform.position + WorldForce*ForceGizmoScale, Color.yellow, 0, false);
-			Debug.DrawLine(transform.position, transform.position + WorldTorque*TorqueGizmoScale, Color.magenta, 0, false);
+			// Debug.DrawLine(transform.position, transform.position + WorldTorque*TorqueGizmoScale, Color.magenta, 0, false);
 		
-			DebugGraph.Log("torque", WorldTorque.y);
+			// DebugGraph.Log("torque", WorldTorque.y);
 		}
 
 		private void FixedUpdate()

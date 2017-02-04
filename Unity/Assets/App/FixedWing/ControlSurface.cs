@@ -14,6 +14,8 @@ using UniRx;
 
 using ChaosCult.SceneLabels;
 
+using Util.Extenstion;
+
 namespace App.FixedWing
 {
 	// a general control surface on the model
@@ -51,20 +53,20 @@ namespace App.FixedWing
 		{
 			transform.localRotation = Quaternion.AngleAxis(Angle, Axis);
 
-			if (TraceLevel > 1) 
-			{
-				// draw torque
-				Debug.DrawLine(
-					ForceProvider.Where, 
-					ForceProvider.Where + ForceProvider.Torque*ForceDrawScale,
-					Color.magenta, 0, false);
+			// if (TraceLevel > 1) 
+			// {
+			// 	// // draw torque
+			// 	// Debug.DrawLine(
+			// 	// 	ForceProvider.Where, 
+			// 	// 	ForceProvider.Where + ForceProvider.Torque*ForceDrawScale,
+			// 	// 	Color.magenta, 0, false);
 
-				// draw force
-				Debug.DrawLine(
-					ForceProvider.Where, 
-					ForceProvider.Where + ForceProvider.Position*ForceDrawScale, 
-					Color.blue, 0, false);
-			}
+			// 	// draw force
+			// 	Debug.DrawLine(
+			// 		ForceProvider.Position, 
+			// 		ForceProvider.Position + ForceProvider.Force*ForceDrawScale, 
+			// 		Color.blue, 0, false);
+			// }
 		}
 
 		/// <summary>
@@ -72,12 +74,12 @@ namespace App.FixedWing
 		/// </summary>
 		void OnDrawGizmos()
 		{
-			if (TraceLevel > 1)
-			{
-				var fp = ForceProvider;
-				LabelsAccess.DrawLabel(fp.Where, fp.Where + ForceProvider.Force.ToString(), null);
-				LabelsAccess.DrawLabel(gameObject, Angle.ToString(), null);
-			}
+			// if (TraceLevel > 1)
+			// {
+			// 	var fp = ForceProvider;
+			// 	LabelsAccess.DrawLabel(fp.Where, fp.Where + ForceProvider.Force.ToString(), null);
+			// 	LabelsAccess.DrawLabel(gameObject, Angle.ToString(), null);
+			// }
 		}
 
 		private void FixedUpdate()
@@ -88,9 +90,10 @@ namespace App.FixedWing
 
 			ChangeAngle(dt);
 
-			ChangeMagnitude(dt, thrust);
+			ChangeForce(dt, thrust);
 
-			ChangeTorque(dt, thrust);
+			// tilting of wings has very little torque effect
+			// ChangeTorque(dt, thrust);
 		}
 
 		// some control surfaces require specialised angle changes
@@ -111,21 +114,52 @@ namespace App.FixedWing
 			Controller.D = Pid.z;
 		}
 
-		private void ChangeMagnitude(float dt, float thrust)
+		private void ChangeForce(float dt, float thrust)
 		{
 			var fp = ForceProvider;
-			fp.Torque = fp.transform.forward*dt*fp.ThrustRelativeTorque.Evaluate(thrust);
+			var scale = dt*fp.ForceScale*fp.ThrustRelativeTorque.Evaluate(thrust);
+			var dir = fp.transform.up;
+			fp.Force = dir*scale;
+			DebugGraph.Log(gameObject.name + ": force=", fp.Force);
 		}
 
 		void ChangeTorque(float dt, float thrust)
 		{
 			var fp = ForceProvider;
-			var toCenter = _body.CenterOfMass.position - fp.transform.position;
-			var tau = Vector3.Cross(toCenter, fp.transform.forward);
-			fp.Torque = dt*fp.ThrustRelativeForce.Evaluate(thrust)*tau;
+			var toCenter = transform.forward - _body.CenterOfMass.position;
+			var tau = Vector3.Cross(toCenter, fp.Force);
+			fp.Torque = fp.TorqueScale*fp.ThrustRelativeForce.Evaluate(thrust)*tau;
 		}
 
 		private Body _body;
+	}
+}
+
+namespace Util.Extenstion
+{
+	public static class StringExtension
+	{
+		public static string Format = "F3";
+
+		public static string str(this Vector2 vec)
+		{
+			return vec.ToString(Format);
+		}
+
+		public static string str(this Vector3 vec)
+		{
+			return vec.ToString(Format);
+		}
+
+		public static string str(this Vector4 vec)
+		{
+			return vec.ToString(Format);
+		}
+
+		public static string str(this Quaternion quat)
+		{
+			return quat.ToString(Format);
+		}
 	}
 }
 

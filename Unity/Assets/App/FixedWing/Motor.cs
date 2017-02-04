@@ -39,7 +39,7 @@ namespace App.FixedWing
 
 			DebugGraph.Log("Rpm", Rpm);
 
-			ForceProvider.ForceScale = Rpm*RpmScale;
+			ForceProvider.Force = transform.forward*Rpm*RpmScale;
 		}
 
 		private float _rot;

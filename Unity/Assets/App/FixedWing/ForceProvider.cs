@@ -27,27 +27,29 @@ namespace App.FixedWing
 		public float TorqueScale;
 		public Vector3 Torque;
 
-		public Vector3 Where { get { return transform.position; } }
-		public Vector3 Position { get { return transform.forward*ForceScale; } }
+		public Vector3 Position { get { return transform.position; } }
 
-		public Color Color = Color.magenta;
-		public float GizmodMagnitude;
+		public Color ColorForce = Color.magenta;
+		public Color ColorTorque = Color.yellow;
+		public float GizmodMagnitudeTorque;
+		public float GizmodMagnitudeForce;
 		public int TraceLevel = 1;
 
-		private void Update()
-		{
-			if (TraceLevel > 0) 
-			{
-				Debug.DrawLine(
-					transform.position, 
-					transform.position + transform.forward*ForceScale*GizmodMagnitude, 
-					Color, 0);
-				DebugGraph.Log("RUD", Position*ForceScale);
-			}
-
-		}
-
-
+		// private void Update()
+		// {
+		// 	if (TraceLevel > 0) 
+		// 	{
+		// 		Debug.DrawLine(
+		// 			transform.position, 
+		// 			transform.position + Force*GizmodMagnitudeForce, 
+		// 			ColorForce, 0);
+				
+		// 		Debug.DrawLine(
+		// 			transform.position, 
+		// 			transform.position + Torque*GizmodMagnitudeTorque, 
+		// 			ColorTorque, 0);
+		// 	}
+		// }
 	}
 }
 

@@ -18,13 +18,13 @@ labels:
 - Editor
 - Maker
 - Analyze
-timeCreated: 1436474639
-licenseType: Store
+timeCreated: 1486173929
+licenseType: Pro
 MonoImporter:
   serializedVersion: 2
   defaultReferences: []
   executionOrder: 0
-  icon: {fileID: 2800000, guid: 6e53b8018d80d374185fd213fff3caf3, type: 3}
+  icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
   userData: 
   assetBundleName: 
   assetBundleVariant: 

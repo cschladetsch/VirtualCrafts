@@ -63,10 +63,11 @@ namespace App.FixedWing
 
 		void DrawGraphs()
 		{
-			DebugGraph.Log("THR", THR);
-			DebugGraph.Log("RUD", RUD);
-			DebugGraph.Log("ELE", ELE);
-			DebugGraph.Log("AIL", AIL);
+			DebugGraph.Log("THR", (double)THR, Color.red);
+			string r = "RUD";
+			DebugGraph.Log(r, (double)RUD, Color.green);
+			DebugGraph.Log("ELE", (double)ELE, Color.blue);
+			DebugGraph.Log("AIL", (double)AIL, Color.yellow);
 		}
 
 		private void ReadRUD(float dt)

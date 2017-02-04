@@ -41,20 +41,21 @@ namespace App.FixedWing
 
 		private void FixedUpdate()
 		{
-			UpdateForces();
+			var forces = UpdateForces();
 
-			if (TraceLevel > 0) DrawForces();
+			if (TraceLevel > 0) DrawForces(forces);
 		}
 
-		void UpdateForces()
+		IList<ForceProvider> UpdateForces()
 		{
-			var forces = MotorForces().Union(ControlSurfaces());
-//			var forces = ControlSurfaces();
+			var forces = MotorForces().Union(ControlSurfaces()).ToList();
 			foreach (var f in forces)
 			{
-				_rigidBody.AddForceAtPosition(f.Position, f.Where, ForceMode.Impulse);
+				_rigidBody.AddForceAtPosition(f.Force, f.Position, ForceMode.Impulse);
 				_rigidBody.AddTorque(f.Torque, ForceMode.Impulse);
 			}
+
+			return forces;
 		}
 
 		IEnumerable<ForceProvider> MotorForces()
@@ -67,8 +68,12 @@ namespace App.FixedWing
 			return _controlSurfaces.Select(cp => cp.ForceProvider);
 		}
 
-		void DrawForces()
+		void DrawForces(IList<ForceProvider> fp)
 		{
+			foreach (var f in fp)
+			{
+				Debug.DrawLine(f.Position, f.Position + f.Force, Color.red, 0, false);
+			}
 		}
 
 		private Rigidbody _rigidBody;
