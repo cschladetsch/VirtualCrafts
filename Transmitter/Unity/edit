@@ -1,0 +1,4 @@
+#!/bin/sh
+
+open /Applications/Unity-B/Unity.app --args -logFile ./log.out -projectPath `pwd`
+
