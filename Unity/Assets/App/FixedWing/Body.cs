@@ -53,6 +53,7 @@ namespace App.FixedWing
 			foreach (var f in forces)
 			{
 				_rigidBody.AddForceAtPosition(f.Position, f.Where, ForceMode.Impulse);
+				_rigidBody.AddTorque(f.Torque, ForceMode.Impulse);
 			}
 		}
 
