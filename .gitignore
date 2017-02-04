@@ -1,10 +1,12 @@
 Builds/
 obj/
-Temp
-Library
-*~
-*.tmproj
+Temp/
+Library/
 .DS_Store
+
+*~
+*.vscode
+*.tmproj
 *.pidb*
 *.csproj*
 *.sln*
@@ -12,5 +14,6 @@ Library
 *.orig*
 *.userprefs
 *.ipa
+
 .reuniter_data
 ReUniter.meta
