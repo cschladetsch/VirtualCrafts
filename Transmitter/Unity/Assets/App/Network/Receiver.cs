@@ -78,6 +78,7 @@ namespace App.Network
 		public void Send(string text)
 		{
 			byte[] buffer = ToBytes(text);
+			Debug.LogFormat("_connectionId={0}", _connectionId);
 			TestResult(NetworkTransport.Send(_hostId, _connectionId, _channelId, buffer, buffer.Length, out _error), "Send");
 		}
 

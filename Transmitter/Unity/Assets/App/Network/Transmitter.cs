@@ -17,6 +17,7 @@ namespace App.Network
 
 		public void Send(byte[] data)
 		{
+			Debug.LogFormat("_connectionId={0}", _connectionId);
 			TestResult(NetworkTransport.Send(_hostId, _connectionId, 
 				_reiliableChannelId, data, data.Length, out _error), "Send"
 				);
@@ -39,7 +40,7 @@ namespace App.Network
 			if (_connectionId == 0)
 				return;
 
-			int recHostId; 
+			int recHostId;
 			int connectionId; 
 			int channelId; 
 			byte[] recBuffer = new byte[1024]; 

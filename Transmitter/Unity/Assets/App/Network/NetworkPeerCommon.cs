@@ -22,7 +22,7 @@ namespace App.Network
 		{
 			if (result) return;
 
-			Debug.LogErrorFormat("Failure: {0} with error {1}", what, GetErrorString(_error));
+			Debug.LogErrorFormat("Failure: {0} with error #{2}: '{1}'", what, GetErrorString(_error), _error);
 		}
 
 		protected string ToString(byte[] bytes)
