@@ -13,14 +13,22 @@ namespace App.Network
 	{
 		public int Port = 11008;
 		public string IpAddress = "192.168.0.2";
+		public Connection Connection { get { return _connection; } }
 
-		private void Start()
+		bool first = true;
+		private void Update()
 		{
+			if (!first) return;
+			if (Time.time < 1) return;
+
+			first = false;
+
 			var ip = Utils.Network.GetAddress(IpAddress);
 
 			var socket = new Socket(ip.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 			_client = new TcpClient();
-			_client.BeginConnect(ip, Port, new AsyncCallback(Connected), socket);
+			Debug.Log("BeginConnectServer");
+			_client.BeginConnect(Dns.GetHostAddresses(IpAddress), Port, new AsyncCallback(Connected), socket);
 		}
 
         private void OnDestroy()
@@ -30,10 +38,10 @@ namespace App.Network
 
 		void Close()
 		{
-            if (_server != null) _server.Close();
+            if (_connection != null) _connection.Close();
             if (_client != null) _client.Close();
 
-			_server = null;
+			_connection = null;
 			_client = null;
 		}
 
@@ -42,16 +50,21 @@ namespace App.Network
 			Close();
         }
 
-		void Connected(IAsyncResult result)
+		void Connected(IAsyncResult ar)
 		{
-			var socket = (Socket)result;
-			socket.EndConnect(result);
+			var socket = (Socket)ar.AsyncState;
+			socket.EndConnect(ar);
 
-			_server = new Connection(socket);
+			// Debug.LogFormat("Socket connected to {0}", socket.RemoteEndPoint.ToString());
+
+			_connection = new Connection(socket);
+			_connection.Receive();
+
+			// _server.Send("World");
 		}
 
 		private TcpClient _client;
-		private Connection _server;
+		private Connection _connection;
 	}
 }
 

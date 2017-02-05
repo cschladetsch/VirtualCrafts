@@ -57,7 +57,8 @@ namespace App.Network
         {
             try 
             {
-                _listener.BeginAcceptSocket(new AsyncCallback(AcceptCallback), null);
+                Debug.Log("BeginAcceptSocket");
+                _listener.BeginAcceptSocket(new AsyncCallback(AcceptCallback), _listener);
             }
             catch (Exception e)
             {
@@ -68,27 +69,24 @@ namespace App.Network
 
         public void AcceptCallback(IAsyncResult ar)
         {
-            Connection client = new Connection(_listener.EndAcceptSocket(ar));
-
+            var socket = _listener.EndAcceptSocket(ar);
+            Connection client = new Connection(socket);
             _clients[client.IPAddress] = client;
-
-            // client.MessageReceived
-            //     .DistinctUntilChanged()
-            //     .Subscribe(t => { Debug.Log("Client recevied: " + t); });
-
-            client.Send("Hello");
-
+            // client.Send("Hello");
             NextClient();
-        }
-
-        private static void ProcessClientMessage(string text)
-        {
-            Debug.LogFormat("Read Frame: {0}", text);
         }
 
         private void Send(Connection client, String text)
         {
             client.Send(text);
+        }
+
+        public void SendToAll(string text)
+        {
+            foreach (var kv in _clients)
+            {
+                kv.Value.Send(text);
+            }
         }
 
         private TcpListener _listener;

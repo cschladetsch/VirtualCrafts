@@ -10,6 +10,9 @@ using UniRx;
 
 namespace App.Network
 {
+	/// <summary>
+	/// Common functionality to asynchronously send and receive text between a client and a server 
+	/// </summary>
     public class Connection
     {
 		public StringReactiveProperty MessageSent = new StringReactiveProperty();
@@ -31,7 +34,9 @@ namespace App.Network
 
 		public IAsyncResult Send(string text)
 		{
+			// prepend the length of the payload
 			text = String.Format("{0} {1}", text.Length, text);
+			//Debug.Log("Sending: " + text);
 			_sendBuffer = Encoding.ASCII.GetBytes(text);
 			_sendOffset = 0;
 			return SendAsync();
@@ -58,15 +63,18 @@ namespace App.Network
         {
             try
             {
+				if (_socket == null) return;
+
                 var state = (Connection)ar.AsyncState;
                 _sendOffset += _socket.EndSend(ar);
-                Debug.LogFormat("{0} bytes sent", _sendOffset);
+                Debug.LogFormat("{0} bytes sent, sendBuffer.Length = {1}", _sendOffset, _sendBuffer.Length);
 				if (_sendOffset == _sendBuffer.Length)
 				{
 					// strip leading size string
 					var text = Encoding.ASCII.GetString(_sendBuffer, 0, _sendBuffer.Length);
 					var index = text.IndexOf(' ');
-					MessageSent.Value = text.Substring(0, index);
+					MessageSent.Value = text.Substring(index);
+					Debug.LogFormat("Got message '{0}'", MessageSent.Value);
 					EndSend();
 					return;
 				}
@@ -107,6 +115,8 @@ namespace App.Network
 			var text = Encoding.ASCII.GetString(
 				state._recvBuffer, state._recvOffset, state._recvBuffer.Length - state._recvOffset);
 
+			Debug.Log("Recv part: " + text);
+
 			if (state._recvSize == 0)
 			{
 				var spaceIndex = text.IndexOf(' ');
@@ -122,6 +132,7 @@ namespace App.Network
             if (state._recvOffset == state._sendBuffer.Length)
             {
                 MessageReceived.Value = Encoding.ASCII.GetString(state._recvBuffer, 0, _recvSize);
+				Debug.Log("Recv: " + MessageReceived.Value);
             }
 
 			ReceiveAsync();
