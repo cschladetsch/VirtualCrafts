@@ -12,7 +12,7 @@ using App.Utils;
 
 using UniRx;
 
-namespace App
+namespace App.Network
 {
 	public class Receiver : MonoBehaviour 
 	{

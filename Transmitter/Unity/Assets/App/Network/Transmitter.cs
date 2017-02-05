@@ -13,7 +13,7 @@ using UnityEngine.Networking;
 using App.Math;
 using App.Utils;
 
-namespace App
+namespace App.Network
 {
 	public class Transmitter : MonoBehaviour 
 	{

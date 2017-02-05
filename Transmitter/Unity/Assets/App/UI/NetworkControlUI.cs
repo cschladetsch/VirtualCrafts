@@ -10,12 +10,18 @@ using Random = UnityEngine.Random;
 using App.Math;
 using App.Utils;
 
+
+using App.Network;
+
 using UniRx;
 
-namespace App
+namespace App.UI
 {
-	public class NetworkTestUI : MonoBehaviour 
+	public class NetworkControlUI : MonoBehaviour 
 	{
+		public Transmitter Transmitter;
+		public Receiver Receiver;
+
 		private void Awake()
 		{
 		}
@@ -38,6 +44,26 @@ namespace App
 
 		public void ToClient()
 		{
+		}
+
+		public void StartServer()
+		{
+			Debug.Log("StartServer");
+		}
+
+		public void JoinSession()
+		{
+			Debug.Log("JoinSession");
+		}
+
+		public void HostSend()
+		{
+			Debug.Log("HostSend");
+		}
+
+		public void ClientSend()
+		{
+			Debug.Log("ClientSend");
 		}
 	}
 }
