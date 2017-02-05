@@ -30,15 +30,20 @@ namespace App.Network
 		public Connection(Socket socket)
 		{
 			_socket = socket;
+			Assert.IsNotNull(socket);
+			Assert.IsNotNull(_socket);
+			Assert.IsTrue(socket.Connected);
 		}
 
 		public IAsyncResult Send(string text)
 		{
 			// prepend the length of the payload
+			Assert.IsNotNull(_socket);
+			Assert.IsTrue(_socket.Connected);
 			text = String.Format("{0} {1}", text.Length, text);
-			//Debug.Log("Sending: " + text);
 			_sendBuffer = Encoding.ASCII.GetBytes(text);
 			_sendOffset = 0;
+			Assert.IsNotNull(_socket);
 			return SendAsync();
 		}
 
@@ -46,6 +51,8 @@ namespace App.Network
 		{
             try
             {
+				Assert.IsNotNull(_socket);
+				Assert.IsTrue(_socket.Connected);
 				return _socket.BeginSend(
 						_sendBuffer, _sendOffset, _sendBuffer.Length - _sendOffset, SocketFlags.None,
 						new AsyncCallback(SendCallback), this);
@@ -63,7 +70,8 @@ namespace App.Network
         {
             try
             {
-				if (_socket == null) return;
+				Assert.IsNotNull(_socket);
+				Assert.IsTrue(_socket.Connected);
 
                 var state = (Connection)ar.AsyncState;
                 _sendOffset += _socket.EndSend(ar);
@@ -74,7 +82,7 @@ namespace App.Network
 					var text = Encoding.ASCII.GetString(_sendBuffer, 0, _sendBuffer.Length);
 					var index = text.IndexOf(' ');
 					MessageSent.Value = text.Substring(index);
-					Debug.LogFormat("Got message '{0}'", MessageSent.Value);
+					Debug.LogFormat("Sent message '{0}'", MessageSent.Value);
 					EndSend();
 					return;
 				}
@@ -140,13 +148,13 @@ namespace App.Network
 
 		public void Close()
 		{
-			EndSend();
-			if (_socket == null)
-				return;
+			// EndSend();
+			// if (_socket == null)
+			// 	return;
 
-			_sendBuffer = null;
-			_socket.Close(100);
-			_socket = null;
+			// _sendBuffer = null;
+			// _socket.Close(100);
+			// _socket = null;
 		}
 
 		private void EndReceive()

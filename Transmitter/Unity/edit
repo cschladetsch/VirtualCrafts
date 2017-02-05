@@ -1,4 +1,4 @@
 #!/bin/sh
 
-open /Applications/Unity-$1/Unity.app --args -logFile `pwd`/log.txt -projectPath `pwd`
+open /Applications/Unity-$1/Unity.app --args -logFile log.txt -projectPath `pwd`
 

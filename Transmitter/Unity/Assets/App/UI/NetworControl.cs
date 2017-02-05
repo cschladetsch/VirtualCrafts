@@ -26,6 +26,8 @@ namespace App.Network
 
 		public void ToServer()
 		{
+			Assert.IsNotNull(Client);
+			Assert.IsNotNull(Client.Connection);
 			Client.Connection.Send("To Server");
 		}
 
