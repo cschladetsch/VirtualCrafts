@@ -17,8 +17,8 @@ namespace App.Network
 
 		public void Send(byte[] data)
 		{
-			Debug.LogFormat("_connectionId={0}", _connectionId);
-			TestResult(NetworkTransport.Send(_hostId, _connectionId, 
+			Debug.LogFormat("_connectionId={0}, reliable={1}, unreliable={2}", _connectionId, _unreliableChannelId, _reiliableChannelId);
+			TestResult(NetworkTransport.Send(_hostId, 1, 
 				_reiliableChannelId, data, data.Length, out _error), "Send"
 				);
 		}
@@ -46,15 +46,14 @@ namespace App.Network
 			byte[] recBuffer = new byte[1024]; 
 			int bufferSize = 1024;
 			int dataSize;
-			NetworkEventType recData = NetworkTransport.Receive(out recHostId, out connectionId, out channelId, recBuffer, bufferSize, out dataSize, out _error);
-			switch (recData)
-			{
-				//1	nothing interesting happened	
-				case NetworkEventType.Nothing:         
-					Debug.Log("NothingEvent");
-					break;
 
-				//2	Connection event come in
+			NetworkEventType evnt = NetworkTransport.Receive(
+				out recHostId, out connectionId, out channelId, recBuffer, bufferSize, out dataSize, out _error);
+			if (evnt == NetworkEventType.Nothing)
+				return;
+
+			switch (evnt)
+			{
 				case NetworkEventType.ConnectEvent:
 					Debug.Log("ConnectEvent");
 					break;

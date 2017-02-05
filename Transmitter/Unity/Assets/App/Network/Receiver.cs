@@ -27,20 +27,21 @@ namespace App.Network
 
 		private void Update()
 		{
+			if (_connectionId == 0)
+				return;
+
 			byte[] buffer = new byte[1024]; 
 			int bufferSize = 1024;
 			int receiveSize;
 			byte error;
 
 			NetworkEventType evnt = NetworkTransport.Receive(
-				out _hostId, out _connectionId, out _channelId, buffer, bufferSize
-				, out receiveSize, out error);
+				out _hostId, out _connectionId, out _channelId, buffer, bufferSize, out receiveSize, out error);
+			if (evnt == NetworkEventType.Nothing)
+				return;
 
 			switch (evnt)
 			{
-				case NetworkEventType.Nothing:
-					break;
-
 				case NetworkEventType.ConnectEvent:
 					if ((NetworkError)error == NetworkError.Ok)
 					{
