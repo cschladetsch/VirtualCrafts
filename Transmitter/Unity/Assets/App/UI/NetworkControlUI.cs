@@ -50,12 +50,12 @@ namespace App.UI
 
 		public void HostSend()
 		{
-			Transmitter.SendText("Hello");
+			Transmitter.Send("Hello");
 		}
 
 		public void ClientSend()
 		{
-			Receiver.SendText("World");
+			Receiver.Send("World");
 		}
 	}
 }

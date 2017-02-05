@@ -6,7 +6,8 @@ using UnityEngine.Networking;
 
 namespace App.Network
 {
-    public class Receiver : MonoBehaviour 
+	// a peer in the network that is not a host
+    public class Receiver : NetworkPeerCommon
 	{
 		public string TransmitterIp;
 		public int Port;
@@ -31,7 +32,10 @@ namespace App.Network
 			int receiveSize;
 			byte error;
 
-			NetworkEventType evnt = NetworkTransport.Receive(out _hostId, out _connectionId, out _channelId, buffer, bufferSize, out receiveSize, out error);
+			NetworkEventType evnt = NetworkTransport.Receive(
+				out _hostId, out _connectionId, out _channelId, buffer, bufferSize
+				, out receiveSize, out error);
+
 			switch (evnt)
 			{
 				case NetworkEventType.Nothing:
@@ -54,14 +58,10 @@ namespace App.Network
 					break;
 
 				case NetworkEventType.DataEvent:
-					Debug.LogFormat("DataEvent: {0} {1}", receiveSize, Encoding.ASCII.GetString(buffer));
+					Debug.LogFormat("DataEvent: {0} {1}", receiveSize, ToString(buffer));
 					break;
 
 			}
-		}
-
-		private void FixedUpdate()
-		{
 		}
 
 		public void PowerOn()
@@ -69,36 +69,21 @@ namespace App.Network
 			if (!NetworkTransport.IsStarted)
 				NetworkTransport.Init();
 			
-			// ConnectionConfig config = new ConnectionConfig();
-			// _channelId = config.AddChannel(QosType.Reliable);
-
-			// HostTopology topology = new HostTopology(config, 1);
-
-			// _hostId = NetworkTransport.AddHost(topology, Port);
-
 			var ip = string.IsNullOrEmpty(TransmitterIp) ? Utils.Net.GetMyAddress() : IPAddress.Parse(TransmitterIp);
 			_connectionId = NetworkTransport.Connect(_hostId, ip.ToString(), Port, 0, out _error);
 
 			Debug.LogFormat("HostId={0}, ChannelId={1}, ConnectionId={2}", _hostId, _channelId, _connectionId);
 		}
 
-		public void SendText(string text)
+		public void Send(string text)
 		{
-			byte[] buffer = Encoding.ASCII.GetBytes(text);
+			byte[] buffer = ToBytes(text);
 			TestResult(NetworkTransport.Send(_hostId, _connectionId, _channelId, buffer, buffer.Length, out _error), "Send");
-		}
-
-		private void TestResult(bool result, string what = "")
-		{
-			if (result) return;
-
-			Debug.LogErrorFormat("Failure: {0} with error {1}", what, _error);
 		}
 
 		int _connectionId;
 		int _channelId;
 		int _hostId;
-		byte _error;
 	}
 }
 

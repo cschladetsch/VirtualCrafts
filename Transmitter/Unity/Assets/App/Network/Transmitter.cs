@@ -5,20 +5,33 @@ using UnityEngine.Networking;
 
 namespace App.Network
 {
-    public class Transmitter : MonoBehaviour 
+    public class Transmitter : NetworkPeerCommon 
 	{
 		public int Port;
 		public string IpAddress { get { return _ipAddress;  } }
+
+		public void PowerOn()
+		{
+			Configure();
+		}
+
+		public void Send(byte[] data)
+		{
+			TestResult(NetworkTransport.Send(_hostId, _connectionId, 
+				_reiliableChannelId, data, data.Length, out _error), "Send"
+				);
+		}
+
+		public void Send(string text = "Hello World")
+		{
+			Send(ToBytes(text));
+		}
 
 		private void Awake()
 		{
 			 var def = GetComponentInParent<DefaultSession>();
 			 Port = Port == 0 ? def.Port : Port;
 			 _ipAddress = Utils.Net.GetMyAddress().ToString();
-		}
-
-		private void Start()
-		{
 		}
 
 		private void Update()
@@ -47,7 +60,7 @@ namespace App.Network
 
 				//3	 Data received. In this case recHostId will define host, connectionId will define connection, channelId will define channel; dataSize will define size of the received data. If recBuffer is big enough to contain data, data will be copied in the buffer. If not, error will contain MessageToLong error and you will need reallocate buffer and call this function again.
 				case NetworkEventType.DataEvent:       
-					Debug.LogFormat("DataEvent: {0}={1}", dataSize, Encoding.ASCII.GetString(recBuffer));
+					Debug.LogFormat("DataEvent: {0}={1}", dataSize, ToString(recBuffer));
 					break;
 
 				//4 Disconnection signal come in. It can be signal that established connection has been disconnected or that your connect request is failed.
@@ -79,54 +92,40 @@ namespace App.Network
 			Disconnect();
 		}
 
-		public void PowerOn()
-		{
-			Configure();
-		}
-
 		private void Configure()
 		{
-			NetworkTransport.Init();
+			if (!NetworkTransport.IsStarted)
+				NetworkTransport.Init();
 
 			var config = new ConnectionConfig();
 			_reiliableChannelId  = config.AddChannel(QosType.Reliable);
 			_unreliableChannelId = config.AddChannel(QosType.Unreliable);
 
+			_connectionId = _reiliableChannelId;
+
 			var topology = new HostTopology(config, 10);
-			// create the socket?
 			_hostId = NetworkTransport.AddHost(topology, Port);
 
-			Debug.LogFormat("My ip={0}, port={1}. HostId={2}. ConnectionId={3}", _ipAddress, Port, _hostId, _connectionId);
-		}
-
-		public void SendText(string text = "Hello World")
-		{
-			var buffer = Encoding.ASCII.GetBytes(text);
-			TestResult(NetworkTransport.Send(_hostId, _connectionId, 
-				_reiliableChannelId, buffer, buffer.Length, out _error), "Send"
-				);
+			Debug.LogFormat("Ip={0}, Port={1}. HostId={2}. ConnectionId={3}, Unreliable={4}, Reliable={5}", 
+				_ipAddress, Port, _hostId, _connectionId, _unreliableChannelId, _reiliableChannelId);
 		}
 
 		private void Disconnect()
 		{
+			if (_hostId == -1)
+				return;
+
 			TestResult(NetworkTransport.Disconnect(_hostId, _connectionId, out _error), "Disconnect");
 
 			NetworkManager.Shutdown();
+
+			_hostId = -1;
 		}
 
-		private void TestResult(bool result, string what = "")
-		{
-			if (result) return;
-
-			Debug.LogErrorFormat("Failure: {0} with error {1}", what, _error);
-		}
-
-		private byte _error;
 		private int _connectionId;
 		private int _reiliableChannelId;
 		private int _unreliableChannelId;
 		private int _hostId;
-
 		private string _ipAddress;
 		private int _port;
 	}
