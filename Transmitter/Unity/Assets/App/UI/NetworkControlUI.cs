@@ -40,22 +40,22 @@ namespace App.UI
 
 		public void StartServer()
 		{
-			Debug.Log("StartServer");
+			Transmitter.PowerOn();
 		}
 
 		public void JoinSession()
 		{
-			Debug.Log("JoinSession");
+			Receiver.PowerOn();
 		}
 
 		public void HostSend()
 		{
-			Debug.Log("HostSend");
+			Transmitter.SendText("Hello");
 		}
 
 		public void ClientSend()
 		{
-			Debug.Log("ClientSend");
+			Receiver.SendText("World");
 		}
 	}
 }
