@@ -38,14 +38,6 @@ namespace App.UI
 		{
 		}
 
-		public void ToServer()
-		{
-		}
-
-		public void ToClient()
-		{
-		}
-
 		public void StartServer()
 		{
 			Debug.Log("StartServer");
