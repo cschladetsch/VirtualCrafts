@@ -101,8 +101,6 @@ namespace App.Network
 			_reiliableChannelId  = config.AddChannel(QosType.Reliable);
 			_unreliableChannelId = config.AddChannel(QosType.Unreliable);
 
-			_connectionId = _reiliableChannelId;
-
 			var topology = new HostTopology(config, 10);
 			_hostId = NetworkTransport.AddHost(topology, Port);
 
