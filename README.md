@@ -40,3 +40,14 @@ This is a non-trivial project that will take a few months at least to get somewh
 Overall, I see this taking about 200-400hrs over 1-2 years.
 
 Please contact me for questions or suggestions.
+
+# Multiple Instances of Unity
+From the top-level of the project:
+
+	$ tx # opens the Transmitter project in Unity
+	
+	$ rx # opens (in parallel) the Receiver project
+	
+	$ cr # opens the Crafts project in Unity
+
+You can do all of these at once.
