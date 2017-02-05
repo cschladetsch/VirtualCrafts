@@ -255,6 +255,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 574464672}
+  - component: {fileID: 574464673}
   m_Layer: 0
   m_Name: Session
   m_TagString: Untagged
@@ -277,6 +278,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &574464673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 574464671}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b084a0fbe6bfd424ab05280dfd9e054a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Port: 1111
+  HostIp: 192.168.0.2
 --- !u!1 &577002805
 GameObject:
   m_ObjectHideFlags: 0
@@ -1036,6 +1050,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e13383b68b375414aa13e16002f4db15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TransmitterIp: 
+  Port: 0
 --- !u!1 &1045321928
 GameObject:
   m_ObjectHideFlags: 0
@@ -2282,4 +2298,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 559961fd7ed38426fadaeacaaeea8765, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Port: 11111
+  Port: 0
