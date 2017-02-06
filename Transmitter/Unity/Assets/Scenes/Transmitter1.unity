@@ -938,9 +938,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   StickBay: {fileID: 2009515074}
-  Channel: 1
+  Channel: 0
   Axis: 0
-  ValueText: {fileID: 994034660}
+  ValueText: {fileID: 1544522985}
 --- !u!1 &527402749
 GameObject:
   m_ObjectHideFlags: 0
@@ -1553,7 +1553,6 @@ GameObject:
   - component: {fileID: 787510453}
   - component: {fileID: 787510457}
   - component: {fileID: 787510456}
-  - component: {fileID: 787510458}
   m_Layer: 5
   m_Name: ControlOutput
   m_TagString: Untagged
@@ -1674,21 +1673,6 @@ MonoBehaviour:
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 1
   m_ChildControlHeight: 1
---- !u!114 &787510458
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 787510451}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5cd3a726cf06a4a228fdbdee37fff818, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  StickBay: {fileID: 0}
-  Channel: 0
-  Axis: 0
-  ValueText: {fileID: 0}
 --- !u!1 &790734056
 GameObject:
   m_ObjectHideFlags: 0
@@ -4991,10 +4975,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cd3a726cf06a4a228fdbdee37fff818, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StickBay: {fileID: 0}
+  StickBay: {fileID: 2009515074}
   Channel: 1
   Axis: 0
-  ValueText: {fileID: 0}
+  ValueText: {fileID: 994034660}
 --- !u!1 &1646485576
 GameObject:
   m_ObjectHideFlags: 0
@@ -5203,10 +5187,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cd3a726cf06a4a228fdbdee37fff818, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StickBay: {fileID: 0}
-  Channel: 0
+  StickBay: {fileID: 1846653313}
+  Channel: 3
   Axis: 0
-  ValueText: {fileID: 0}
+  ValueText: {fileID: 1164375772}
 --- !u!1 &1691461873
 GameObject:
   m_ObjectHideFlags: 0
@@ -5747,6 +5731,7 @@ MonoBehaviour:
   Knob: {fileID: 790734056}
   Radius: 400
   Pid: {x: 0.3, y: 0.1, z: 0.001}
+  Output: {x: 0, y: 0}
 --- !u!1 &1882086475
 GameObject:
   m_ObjectHideFlags: 0
@@ -5837,7 +5822,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   StickBay: {fileID: 1846653313}
-  Channel: 3
+  Channel: 2
   Axis: 1
   ValueText: {fileID: 1164375772}
 --- !u!1 &1942625454
@@ -6191,6 +6176,7 @@ MonoBehaviour:
   Knob: {fileID: 1021564626}
   Radius: 400
   Pid: {x: 0.3, y: 0.1, z: 0.001}
+  Output: {x: 0, y: 0}
 --- !u!1 &2017502645
 GameObject:
   m_ObjectHideFlags: 0
