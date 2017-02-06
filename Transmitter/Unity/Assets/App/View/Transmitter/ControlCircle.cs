@@ -13,7 +13,7 @@ using App.Utils;
 
 using UniRx;
 
-namespace App.UI.Transmitter
+namespace App.View.Transmitter
 {
 	public class ControlCircle : MonoBehaviour,
 		IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerDownHandler
@@ -23,6 +23,8 @@ namespace App.UI.Transmitter
 		public GameObject Knob;
 		public float Radius;
 		public Vector3 Pid;
+
+		public Vector2 Output;
 
 		private void Awake()
 		{
@@ -37,6 +39,10 @@ namespace App.UI.Transmitter
 
 		private void Update()
 		{
+			var k = _rcKnob.anchoredPosition;
+			var c = _rc.anchoredPosition;
+			var d = k - c;
+			Output = d;//new Vector2(-.5f, -0.5f) + d/Radius*2.0f;
 		}
 
 		private void FixedUpdate()
