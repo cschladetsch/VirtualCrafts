@@ -5,7 +5,7 @@ using UnityEngine.Networking;
 
 namespace App.Network
 {
-    public class Transmitter : NetworkPeerCommon 
+    public class RadioTransmitter : NetworkPeerCommon 
 	{
 		public int Port;
 		public string IpAddress { get { return _ipAddress;  } }

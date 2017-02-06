@@ -1,6 +1,0 @@
-
-# $1 is folder name containing the Unity project
-# $2 is the version of unity to use
-
-cd $1/Unity && ./edit $2
-

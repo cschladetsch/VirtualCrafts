@@ -7,7 +7,7 @@ using UnityEngine.Networking;
 namespace App.Network
 {
 	// a peer in the network that is not a host
-    public class Receiver : NetworkPeerCommon
+    public class RadioReceiver : NetworkPeerCommon
 	{
 		public string TransmitterIp;
 		public int Port;
@@ -27,9 +27,6 @@ namespace App.Network
 
 		private void Update()
 		{
-			if (_connectionId == 0)
-				return;
-
 			byte[] buffer = new byte[1024]; 
 			int bufferSize = 1024;
 			int receiveSize;
@@ -37,6 +34,7 @@ namespace App.Network
 
 			NetworkEventType evnt = NetworkTransport.Receive(
 				out _hostId, out _connectionId, out _channelId, buffer, bufferSize, out receiveSize, out error);
+
 			if (evnt == NetworkEventType.Nothing)
 				return;
 
@@ -71,7 +69,7 @@ namespace App.Network
 				NetworkTransport.Init();
 			
 			var ip = string.IsNullOrEmpty(TransmitterIp) ? Utils.Net.GetMyAddress() : IPAddress.Parse(TransmitterIp);
-			_connectionId = NetworkTransport.Connect(_hostId, ip.ToString(), Port, 0, out _error);
+			var result = NetworkTransport.Connect(_hostId, ip.ToString(), Port, 0, out _error);
 
 			Debug.LogFormat("HostId={0}, ChannelId={1}, ConnectionId={2}", _hostId, _channelId, _connectionId);
 		}

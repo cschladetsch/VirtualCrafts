@@ -19,8 +19,8 @@ namespace App.UI
 {
 	public class NetworkControlUI : MonoBehaviour 
 	{
-		public Transmitter Transmitter;
-		public Receiver Receiver;
+		public RadioTransmitter Transmitter;
+		public RadioReceiver Receiver;
 
 		private void Awake()
 		{
