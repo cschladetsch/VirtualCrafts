@@ -18,9 +18,11 @@ namespace App.UI.Transmitter
 	public class ControlCircle : MonoBehaviour,
 		IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerDownHandler
 	{
-		public bool AutoCenters;
+		public bool AutoCenterX;
+		public bool AutoCenterY;
 		public GameObject Knob;
 		public float Radius;
+		public Vector3 Pid;
 
 		private void Awake()
 		{
@@ -39,6 +41,23 @@ namespace App.UI.Transmitter
 
 		private void FixedUpdate()
 		{
+			if (!_dragging)
+				RecenterSticks();
+		}
+
+		void RecenterSticks()
+		{
+			_pidLeftRight.SetPid(Pid);
+			_pidUpDown.SetPid(Pid);
+
+			var dt = Time.fixedDeltaTime;
+			var ap = _rcKnob.anchoredPosition;
+
+			var deltaLR = _pidLeftRight.Calculate(0, ap.x, dt);
+			var deltaUD = AutoCenterY ? _pidUpDown.Calculate(0, ap.y, dt) : 0;
+
+			var delta = new Vector2(deltaLR, deltaUD);
+			_rcKnob.anchoredPosition += delta;
 		}
 
 		Vector2 GetCenteredPosition(PointerEventData eventData)//, Vector2 pos)
@@ -56,8 +75,7 @@ namespace App.UI.Transmitter
 
 		public void OnBeginDrag(PointerEventData eventData)
 		{
-			// var rel = GetCenteredPosition(eventData);
-			// Debug.Log("BeginDrag at " + rel);
+			_dragging = true;
 		}
 
 		public void OnDrag(PointerEventData eventData)
@@ -70,14 +88,13 @@ namespace App.UI.Transmitter
 			Vector2 sp = eventData.pointerCurrentRaycast.screenPosition;
 			var delta = sp - center;
 			var scaled = new Vector2(delta.x/width, delta.y/height);
-			var len = Mathf.Clamp(delta.magnitude, 0, 400);
+			var len = Mathf.Clamp(delta.magnitude, 0, Radius);
 			_rcKnob.anchoredPosition = _knobStart + delta.normalized*len;
 		}
         
 		public void OnEndDrag(PointerEventData eventData)
 		{
-			// var rel = eventData.position - _parentRc.anchoredPosition;
-			// Debug.Log("OnEndDrag at " + rel);
+			_dragging = false;
 		}
 
 		private static Vector2 getScreenPosition(Vector2 screen)
@@ -90,6 +107,11 @@ namespace App.UI.Transmitter
 		private RectTransform _rc;
 		private RectTransform _rcKnob;
 		private Vector2 _knobStart;
+
+		private PidScalarController _pidLeftRight = new PidScalarController();
+		private PidScalarController _pidUpDown = new PidScalarController();
+
+		private bool _dragging;
 	}
 }
 

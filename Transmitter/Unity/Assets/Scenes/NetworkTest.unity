@@ -613,7 +613,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &574464672
 Transform:
   m_ObjectHideFlags: 0
@@ -1695,6 +1695,7 @@ GameObject:
   - component: {fileID: 1021564630}
   - component: {fileID: 1021564629}
   - component: {fileID: 1021564628}
+  - component: {fileID: 1021564631}
   m_Layer: 5
   m_Name: Knob
   m_TagString: Untagged
@@ -1766,6 +1767,17 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1021564626}
+--- !u!114 &1021564631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1021564626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c02456f0393404fdaa66ece0d0f48b0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1045321928
 GameObject:
   m_ObjectHideFlags: 0
@@ -2088,8 +2100,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1959838713}
   m_HandleRect: {fileID: 1959838712}
   m_Direction: 0
-  m_Value: 0.5
-  m_Size: 0.9999999
+  m_Value: 0
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3364,6 +3376,7 @@ GameObject:
   - component: {fileID: 1846653312}
   - component: {fileID: 1846653311}
   - component: {fileID: 1846653310}
+  - component: {fileID: 1846653313}
   m_Layer: 5
   m_Name: Circle
   m_TagString: Untagged
@@ -3436,6 +3449,22 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1846653308}
+--- !u!114 &1846653313
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1846653308}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e080abed187a459f88f7adacd1880be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AutoCenterX: 1
+  AutoCenterY: 1
+  Knob: {fileID: 790734056}
+  Radius: 400
+  Pid: {x: 0.3, y: 0.1, z: 0.001}
 --- !u!1 &1942625454
 GameObject:
   m_ObjectHideFlags: 0
@@ -3630,7 +3659,7 @@ RectTransform:
   m_Father: {fileID: 2059201580}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.000000059604645, y: 0}
+  m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0.99999994, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
@@ -3679,6 +3708,7 @@ GameObject:
   - component: {fileID: 2009515073}
   - component: {fileID: 2009515072}
   - component: {fileID: 2009515071}
+  - component: {fileID: 2009515074}
   m_Layer: 5
   m_Name: Circle
   m_TagString: Untagged
@@ -3751,6 +3781,22 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2009515069}
+--- !u!114 &2009515074
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2009515069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e080abed187a459f88f7adacd1880be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AutoCenterX: 1
+  AutoCenterY: 0
+  Knob: {fileID: 1021564626}
+  Radius: 400
+  Pid: {x: 0.3, y: 0.1, z: 0.001}
 --- !u!1 &2017502645
 GameObject:
   m_ObjectHideFlags: 0

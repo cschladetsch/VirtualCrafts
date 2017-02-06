@@ -27,8 +27,13 @@ namespace App.Math
 			D = d;
 		}
 
-		bool _first;
-		
+		public void SetPid(Vector3 pid)
+		{
+			P = pid.x;
+			I = pid.y;
+			D = pid.z;
+		}
+
 		/// <summary>
 		/// Calculate output from controller. 
 		/// </summary>
@@ -47,12 +52,6 @@ namespace App.Math
 			// Integral term - this is persistent
 			_integral += error * dt;
 			float Iout = I * _integral;
-
-			// if (_first)
-			// {
-			// 	_lastError = error;
-			// 	_first = false;
-			// }
 
 			// derivative term - this is transient
 			float delta = (error - _lastError);
