@@ -49,24 +49,15 @@ namespace App.FixedWing
 			ForceProvider = GetComponentInChildren<ForceProvider>();
 		}
 
-		private void Update()
-		{
-			transform.localRotation = Quaternion.AngleAxis(Angle, RotationAxis);
+		// private void Update()
+		// {
+		// 	// transform.localRotation = Quaternion.AngleAxis(Angle, RotationAxis);
 
-			// if (TraceLevel > 1) 
-			// {
-			// 	// // draw torque
-			// 	// Debug.DrawLine(
-			// 	// 	ForceProvider.Where, 
-			// 	// 	ForceProvider.Where + ForceProvider.Torque*ForceDrawScale,
-			// 	// 	Color.magenta, 0, false);
-
-			// 	// draw force
-				Debug.DrawLine(
-					ForceProvider.Position, 
-					ForceProvider.Position + ForceProvider.Force*ForceDrawScale, 
-					Color.blue, 0, false);
-		}
+		// 		Debug.DrawLine(
+		// 			ForceProvider.Position, 
+		// 			ForceProvider.Position + ForceProvider.Force*ForceDrawScale, 
+		// 			Color.blue, 0, false);
+		// }
 
 		/// <summary>
 		/// Callback to draw gizmos that are pickable and always drawn.
@@ -106,12 +97,12 @@ namespace App.FixedWing
 		// some control surfaces require specialised angle changes
 		virtual protected void ChangeAngle(float dt)
 		{
-			UpdatePid();
+			// UpdatePid();
 
 			var delta = Controller.Calculate(DesiredAngle, Angle, dt);
 			Angle += delta;
 			Angle = Mathf.Clamp(Angle, -MaxThrow, MaxThrow);
-			ForceProvider.transform.localRotation = Quaternion.AngleAxis(Angle, RotationAxis);
+			transform.localRotation = Quaternion.AngleAxis(Angle, RotationAxis);
 		}
 
 		protected void UpdatePid()

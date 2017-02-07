@@ -758,19 +758,43 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ThrustRelativeForce:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   ForceScale: 0
   ForceDir: {x: 0, y: 0, z: 0}
   Force: {x: 0, y: 0, z: 1}
   ThrustRelativeTorque:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 2
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - serializedVersion: 2
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
-    m_RotationOrder: 4
+    m_RotationOrder: 0
   TorqueScale: 0
   Torque: {x: 0, y: 1, z: 0}
   ColorForce: {r: 1, g: 0, b: 1, a: 1}
@@ -1942,7 +1966,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1354840900
 MonoBehaviour:
   m_ObjectHideFlags: 0

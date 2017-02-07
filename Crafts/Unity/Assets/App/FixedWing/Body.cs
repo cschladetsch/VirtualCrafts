@@ -71,6 +71,16 @@ namespace App.FixedWing
 			}
 		}
 
+		// IEnumerable<ForceProvider> MotorForces()
+		// {
+		// 	return _motors.Select(m => m.ForceProvider);
+		// }
+
+		// IEnumerable<ForceProvider> ControlSurfaces()
+		// {
+		// 	return _controlSurfaces.Select(cp => cp.ForceProvider);
+		// }
+
 		// void DrawForces(IList<ForceProvider> fp)
 		// {
 		// 	foreach (var f in fp)
