@@ -51,8 +51,8 @@ namespace App.FixedWing
 			var forces = MotorForces().Union(ControlSurfaces()).ToList();
 			foreach (var f in forces)
 			{
-				_rigidBody.AddForceAtPosition(f.Force, f.Position, ForceMode.Impulse);
-				_rigidBody.AddTorque(f.Torque, ForceMode.Impulse);
+				_rigidBody.AddForceAtPosition(f.Force*f.ForceScale, f.Position, ForceMode.Impulse);
+				_rigidBody.AddTorque(f.Torque*f.TorqueScale, ForceMode.Impulse);
 			}
 
 			return forces;

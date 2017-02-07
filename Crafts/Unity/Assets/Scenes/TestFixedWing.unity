@@ -998,7 +998,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
-  ForceScale: 1
+  ForceScale: 0.05
   Force: {x: 0, y: 0, z: 1}
   ThrustRelativeTorque:
     serializedVersion: 2
