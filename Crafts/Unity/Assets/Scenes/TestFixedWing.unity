@@ -931,7 +931,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &459323360
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -944,7 +944,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 703db9b812bca47a7b4bb2c7a48d1174, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RotationAxis: {x: 0, y: 0, z: 0}
+  RotationAxis: {x: 1, y: 0, z: 0}
   MaxThrow: 30
   Pid: {x: 0.05, y: 0.005, z: 0.0005}
   DesiredAngle: 0
@@ -1729,7 +1729,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 703db9b812bca47a7b4bb2c7a48d1174, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RotationAxis: {x: 0, y: 0, z: 0}
+  RotationAxis: {x: 1, y: 0, z: 0}
   MaxThrow: 30
   Pid: {x: 0.05, y: 0.005, z: 0.0005}
   DesiredAngle: 0
@@ -1769,7 +1769,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1282024374
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1782,7 +1782,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 703db9b812bca47a7b4bb2c7a48d1174, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RotationAxis: {x: 0, y: 0, z: 0}
+  RotationAxis: {x: 1, y: 0, z: 0}
   MaxThrow: 30
   Pid: {x: 0.05, y: 0.005, z: 0.0005}
   DesiredAngle: 0
@@ -1966,7 +1966,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1354840900
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1979,7 +1979,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 703db9b812bca47a7b4bb2c7a48d1174, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RotationAxis: {x: 0, y: 0, z: 0}
+  RotationAxis: {x: 1, y: 0, z: 0}
   MaxThrow: 30
   Pid: {x: 0.05, y: 0.005, z: 0.0005}
   DesiredAngle: 0
@@ -2136,7 +2136,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1405358728
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2149,7 +2149,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 703db9b812bca47a7b4bb2c7a48d1174, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RotationAxis: {x: 0, y: 0, z: 0}
+  RotationAxis: {x: 0, y: 1, z: 0}
   MaxThrow: 30
   Pid: {x: 0.05, y: 0.005, z: 0.0005}
   DesiredAngle: 0
