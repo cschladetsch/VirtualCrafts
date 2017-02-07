@@ -47,7 +47,7 @@ namespace App.FixedWing
 			TraceLevel = 2;
 		}
 
-		public void Update(float dt, Vector3 thrust)
+		public void Step(float dt, Vector3 thrust)
 		{
 			UpdateForce(dt, thrust);
 			UpdateTorque(dt, thrust);

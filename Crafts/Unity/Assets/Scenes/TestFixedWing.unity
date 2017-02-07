@@ -292,7 +292,7 @@ MonoBehaviour:
   MaxThrottleRpm: 2000
   CurrentRpm: 0
   Thrust: {x: 0, y: 0, z: 0}
-  RpmThrustScale: 0
+  RpmThrustScale: 0.1
   PID: {x: 1, y: 0, z: 0}
   PropRotationRenderScale: 0.5
 --- !u!4 &5654037
@@ -391,36 +391,36 @@ MonoBehaviour:
     - serializedVersion: 2
       time: 0
       value: 0
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
     - serializedVersion: 2
       time: 1
       value: 1
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
-  ForceScale: 0.75
+  ForceScale: 0.1
   ForceDir: {x: 0, y: 1, z: 0}
-  Force: {x: 0, y: 0, z: 0}
+  Force: {x: 0, y: 1, z: 0}
   ThrustRelativeTorque:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 2
       time: 0
       value: 0
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
     - serializedVersion: 2
       time: 1
       value: 1
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
@@ -661,7 +661,7 @@ Transform:
   m_GameObject: {fileID: 208106280}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.05, y: 0.07, z: 0}
-  m_LocalScale: {x: 100, y: 4.1524796, z: 100}
+  m_LocalScale: {x: 1000, y: 1, z: 1000}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
@@ -1573,7 +1573,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1219219876
 Transform:
   m_ObjectHideFlags: 0
@@ -1979,19 +1979,19 @@ MonoBehaviour:
     - serializedVersion: 2
       time: 0
       value: 0
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
     - serializedVersion: 2
       time: 1
       value: 1
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
-  ForceScale: 0.75
+  ForceScale: 0.1
   ForceDir: {x: 0, y: 1, z: 0}
   Force: {x: 0, y: 1, z: 0}
   ThrustRelativeTorque:
@@ -2000,20 +2000,20 @@ MonoBehaviour:
     - serializedVersion: 2
       time: 0
       value: 0
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
     - serializedVersion: 2
       time: 1
       value: 1
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
   TorqueScale: 0
-  Torque: {x: 0, y: -1, z: 0}
+  Torque: {x: 0, y: 0, z: 0}
   ColorForce: {r: 1, g: 0, b: 1, a: 1}
   ColorTorque: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   GizmodMagnitudeTorque: 10

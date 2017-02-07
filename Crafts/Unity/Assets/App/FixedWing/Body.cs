@@ -51,7 +51,7 @@ namespace App.FixedWing
 		{
 			foreach (var m in _motors)
 			{
-				m.Update(dt);
+				m.Step(dt);
 				_rigidBody.AddForceAtPosition(m.Thrust, m.Position, ForceMode.Impulse);
 			}
 		}
@@ -60,7 +60,7 @@ namespace App.FixedWing
 		{
 			foreach (var surface in _controlSurfaces)
 			{
-				surface.UpdateForce(dt);
+				surface.Step(dt);
 
 				var f = surface.ForceProvider;
 
@@ -70,16 +70,6 @@ namespace App.FixedWing
 				// Debug.LogFormat("force: {0} at {1}", f.Force, f.Position);
 			}
 		}
-
-		// IEnumerable<ForceProvider> MotorForces()
-		// {
-		// 	return _motors.Select(m => m.ForceProvider);
-		// }
-
-		// IEnumerable<ForceProvider> ControlSurfaces()
-		// {
-		// 	return _controlSurfaces.Select(cp => cp.ForceProvider);
-		// }
 
 		// void DrawForces(IList<ForceProvider> fp)
 		// {

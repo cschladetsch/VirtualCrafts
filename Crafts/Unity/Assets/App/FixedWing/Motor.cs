@@ -46,7 +46,7 @@ namespace App.FixedWing
 			DebugGraph.Log("Rpm", CurrentRpm);
 		}
 
-		public void Update(float dt)
+		public void Step(float dt)
 		{
 			UpdateRpm(dt);
 

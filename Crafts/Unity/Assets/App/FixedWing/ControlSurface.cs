@@ -81,10 +81,10 @@ namespace App.FixedWing
 			// }
 		}
 
-		public void UpdateForce(float dt)
+		public void Step(float dt)
 		{
 			var motor = _body.FlightController.Motor;
-			var thrust = Mathf.Clamp01(motor.CurrentRpm/motor.MaxThrottleRpm);		// normalise thrust
+			var thrust = Mathf.Clamp01(motor.CurrentRpm/motor.MaxThrottleRpm);		
 
 			ChangeAngle(dt);
 
