@@ -24,7 +24,7 @@ namespace App
 			{
 				_filters.Add(new ButterworthFilter(
 					Frequency, (int)SampleRate,
-					ButterworthFilter.PassType.Lowpass, Resonance[n]));
+					EPassType.Lowpass, Resonance[n]));
 			}
 		}
 

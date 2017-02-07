@@ -21,7 +21,7 @@ namespace MathTests
 			var sampleRate = 30;
 			foreach (var resonance in r)
 			{
-				filters.Add(new ButterworthFilter(Mathf.PI/8, sampleRate, ButterworthFilter.PassType.Lowpass, resonance));
+				filters.Add(new ButterworthFilter(Mathf.PI/8, sampleRate, EPassType.Lowpass, resonance));
 			}
 
 			float dt = 1.0f/(float)sampleRate;
