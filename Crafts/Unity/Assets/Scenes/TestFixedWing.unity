@@ -404,8 +404,9 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
-  ForceScale: 0.00001
-  Force: {x: 0, y: 0, z: 1}
+  ForceScale: 0.75
+  ForceDir: {x: 0, y: 1, z: 0}
+  Force: {x: 0, y: 0, z: 0}
   ThrustRelativeTorque:
     serializedVersion: 2
     m_Curve:
@@ -424,8 +425,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
-  TorqueScale: 0.5
-  Torque: {x: 1, y: 0, z: 0}
+  TorqueScale: 0
+  Torque: {x: 0, y: 1, z: 0}
   ColorForce: {r: 1, g: 0, b: 0, a: 1}
   ColorTorque: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   GizmodMagnitudeTorque: 10
@@ -660,7 +661,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 208106280}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.05, y: 0.07, z: 0}
   m_LocalScale: {x: 100, y: 4.1524796, z: 100}
   m_Children: []
   m_Father: {fileID: 0}
@@ -715,6 +716,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   ForceScale: 0
+  ForceDir: {x: 0, y: 0, z: 0}
   Force: {x: 0, y: 0, z: 1}
   ThrustRelativeTorque:
     serializedVersion: 2
@@ -871,7 +873,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 703db9b812bca47a7b4bb2c7a48d1174, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Axis: {x: 1, y: 0, z: 0}
+  RotationAxis: {x: 0, y: 0, z: 0}
   MaxThrow: 30
   Pid: {x: 0.05, y: 0.005, z: 0.0005}
   DesiredAngle: 0
@@ -998,7 +1000,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
-  ForceScale: 0.05
+  ForceScale: 0.5
+  ForceDir: {x: 0, y: 0, z: 0}
   Force: {x: 0, y: 0, z: 1}
   ThrustRelativeTorque:
     serializedVersion: 2
@@ -1222,6 +1225,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 0
   ForceScale: 0
+  ForceDir: {x: 0, y: 0, z: 0}
   Force: {x: 0, y: 0, z: 1}
   ThrustRelativeTorque:
     serializedVersion: 2
@@ -1274,8 +1278,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 972640990}
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.70710677}
-  m_LocalPosition: {x: 2.2405, y: 0.020874681, z: -0.2992729}
-  m_LocalScale: {x: 0.1, y: 1.9513017, z: 0.76660013}
+  m_LocalPosition: {x: 2, y: 0, z: -0.3}
+  m_LocalScale: {x: 0.1, y: 2, z: 0.76660013}
   m_Children: []
   m_Father: {fileID: 1354840901}
   m_RootOrder: 0
@@ -1690,7 +1694,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1227405524
 Transform:
   m_ObjectHideFlags: 0
@@ -1727,7 +1731,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1255812941
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1740,14 +1744,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 703db9b812bca47a7b4bb2c7a48d1174, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Axis: {x: 1, y: 0, z: 0}
+  RotationAxis: {x: 0, y: 0, z: 0}
   MaxThrow: 30
   Pid: {x: 0.05, y: 0.005, z: 0.0005}
   DesiredAngle: 0
   Angle: 0
   ForceProvider: {fileID: 1393295475}
   ForceDrawScale: 2
-  TraceLevel: 0
+  TraceLevel: 2
 --- !u!4 &1255812942
 Transform:
   m_ObjectHideFlags: 0
@@ -1756,8 +1760,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1255812940}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.88, y: 0, z: -0.9699993}
-  m_LocalScale: {x: 0.79, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0.9699993}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1494512978}
   - {fileID: 522415732}
@@ -1793,7 +1797,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 703db9b812bca47a7b4bb2c7a48d1174, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Axis: {x: 1, y: 0, z: 0}
+  RotationAxis: {x: 0, y: 0, z: 0}
   MaxThrow: 30
   Pid: {x: 0.05, y: 0.005, z: 0.0005}
   DesiredAngle: 0
@@ -1977,7 +1981,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1354840900
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1990,14 +1994,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 703db9b812bca47a7b4bb2c7a48d1174, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Axis: {x: 1, y: 0, z: 0}
+  RotationAxis: {x: 0, y: 0, z: 0}
   MaxThrow: 30
   Pid: {x: 0.05, y: 0.005, z: 0.0005}
   DesiredAngle: 0
   Angle: 0
   ForceProvider: {fileID: 1393295475}
   ForceDrawScale: 2
-  TraceLevel: 0
+  TraceLevel: 2
 --- !u!4 &1354840901
 Transform:
   m_ObjectHideFlags: 0
@@ -2006,7 +2010,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1354840899}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.9699993}
+  m_LocalPosition: {x: 0, y: 0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 972640991}
@@ -2074,8 +2078,9 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
-  ForceScale: 0.00001
-  Force: {x: 0, y: 0, z: 1}
+  ForceScale: 0.75
+  ForceDir: {x: 0, y: 1, z: 0}
+  Force: {x: 0, y: 1, z: 0}
   ThrustRelativeTorque:
     serializedVersion: 2
     m_Curve:
@@ -2094,8 +2099,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
-  TorqueScale: 0.5
-  Torque: {x: 1, y: 0, z: 0}
+  TorqueScale: 0
+  Torque: {x: 0, y: -1, z: 0}
   ColorForce: {r: 1, g: 0, b: 1, a: 1}
   ColorTorque: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   GizmodMagnitudeTorque: 10
@@ -2159,7 +2164,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 703db9b812bca47a7b4bb2c7a48d1174, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Axis: {x: 0, y: -1, z: 0}
+  RotationAxis: {x: 0, y: 0, z: 0}
   MaxThrow: 30
   Pid: {x: 0.05, y: 0.005, z: 0.0005}
   DesiredAngle: 0
@@ -2230,6 +2235,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 0
   ForceScale: 0
+  ForceDir: {x: 0, y: 0, z: 0}
   Force: {x: 0, y: 0, z: 1}
   ThrustRelativeTorque:
     serializedVersion: 2
@@ -2296,8 +2302,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1494512977}
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: -1.8, y: -0, z: -0.299}
-  m_LocalScale: {x: 0.1, y: 2.47, z: 0.76659644}
+  m_LocalPosition: {x: -2, y: -0, z: -0.299}
+  m_LocalScale: {x: 0.1, y: 2, z: 0.76659644}
   m_Children: []
   m_Father: {fileID: 1255812942}
   m_RootOrder: 0

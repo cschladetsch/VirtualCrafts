@@ -20,6 +20,7 @@ namespace App.FixedWing
 		// how the force provided by this surface relates to the overall thrust
 		public AnimationCurve ThrustRelativeForce = new AnimationCurve();
 		public float ForceScale;
+		public Vector3 ForceDir;
 		public Vector3 Force;
 
 		// how the torque provided by this surface relates to the overall thrust
@@ -34,6 +35,11 @@ namespace App.FixedWing
 		public float GizmodMagnitudeTorque;
 		public float GizmodMagnitudeForce;
 		public int TraceLevel = 1;
+
+		private void FixedUpdate()
+		{
+			Force = ForceDir*ForceScale*Time.fixedDeltaTime;
+		}
 
 		// private void Update()
 		// {

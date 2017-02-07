@@ -25,21 +25,18 @@ namespace App.FixedWing
 			transform.localRotation = Quaternion.AngleAxis(_rot, -Vector3.forward);
 		}
 
-		private void FixedUpdate()
+		public void UpdateForce(float dt)
 		{
 			PidController.P = PID.x;
 			PidController.I = PID.y;
 			PidController.D = PID.z;
 
-			var dt = Time.fixedDeltaTime;
 			var change = PidController.Calculate(DesiredRpm*MaxThrottleRpm, Rpm, dt);
-			Rpm += change;//*dt;
+			Rpm += change;
 
 			Rpm = Mathf.Clamp(Rpm, 0, MaxThrottleRpm);
 
 			DebugGraph.Log("Rpm", Rpm);
-
-			ForceProvider.Force = transform.forward*Rpm*RpmScale;
 		}
 
 		private float _rot;

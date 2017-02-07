@@ -22,7 +22,7 @@ namespace App.FixedWing
 	public class ControlSurface : MonoBehaviour
 	{
 		// the axis that the surface rotates around
-		public Vector3 Axis;
+		public Vector3 RotationAxis;
 
 		// maximum angle in degrees
 		public float MaxThrow = 30;
@@ -51,7 +51,7 @@ namespace App.FixedWing
 
 		private void Update()
 		{
-			transform.localRotation = Quaternion.AngleAxis(Angle, Axis);
+			transform.localRotation = Quaternion.AngleAxis(Angle, RotationAxis);
 
 			// if (TraceLevel > 1) 
 			// {
@@ -62,11 +62,11 @@ namespace App.FixedWing
 			// 	// 	Color.magenta, 0, false);
 
 			// 	// draw force
-			// 	Debug.DrawLine(
-			// 		ForceProvider.Position, 
-			// 		ForceProvider.Position + ForceProvider.Force*ForceDrawScale, 
-			// 		Color.blue, 0, false);
-			// }
+				Debug.DrawLine(
+					ForceProvider.Position, 
+					ForceProvider.Position + ForceProvider.Force*ForceDrawScale, 
+					Color.blue, 0, false);
+			
 		}
 
 		/// <summary>
@@ -82,9 +82,8 @@ namespace App.FixedWing
 			// }
 		}
 
-		private void FixedUpdate()
+		public void UpdateForce(float dt)
 		{
-			float dt = Time.fixedDeltaTime;
 			var motor = _body.FlightController.Motor;
 			var thrust = Mathf.Clamp01(motor.Rpm/motor.MaxThrottleRpm);		// normalise thrust
 
@@ -96,6 +95,15 @@ namespace App.FixedWing
 			// ChangeTorque(dt, thrust);
 		}
 
+		private void ChangeForce(float dt, float thrust)
+		{
+			var fp = ForceProvider;
+			var scale = fp.ForceScale*fp.ThrustRelativeTorque.Evaluate(thrust);
+			var dir = fp.transform.TransformVector(fp.ForceDir);
+			fp.Force = dir*scale;
+			DebugGraph.Log(gameObject.name + ": force=", fp.Force);
+		}
+
 		// some control surfaces require specialised angle changes
 		virtual protected void ChangeAngle(float dt)
 		{
@@ -104,7 +112,7 @@ namespace App.FixedWing
 			var delta = Controller.Calculate(DesiredAngle, Angle, dt);
 			Angle += delta;
 			Angle = Mathf.Clamp(Angle, -MaxThrow, MaxThrow);
-			ForceProvider.transform.localRotation = Quaternion.AngleAxis(Angle, Axis);
+			ForceProvider.transform.localRotation = Quaternion.AngleAxis(Angle, RotationAxis);
 		}
 
 		protected void UpdatePid()
@@ -112,15 +120,6 @@ namespace App.FixedWing
 			Controller.P = Pid.x;
 			Controller.I = Pid.y;
 			Controller.D = Pid.z;
-		}
-
-		private void ChangeForce(float dt, float thrust)
-		{
-			var fp = ForceProvider;
-			var scale = dt*fp.ForceScale*fp.ThrustRelativeTorque.Evaluate(thrust);
-			var dir = fp.transform.up;
-			fp.Force = dir*scale;
-			DebugGraph.Log(gameObject.name + ": force=", fp.Force);
 		}
 
 		void ChangeTorque(float dt, float thrust)

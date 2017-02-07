@@ -32,7 +32,6 @@ namespace App.FixedWing
 
 			Debug.Log("There are " + _controlSurfaces.Count + " force providers");
 
-
 			foreach (var f in _controlSurfaces)
 			{
 				f.Construct(this);
@@ -41,40 +40,54 @@ namespace App.FixedWing
 
 		private void FixedUpdate()
 		{
-			var forces = UpdateForces();
+			float dt = Time.fixedDeltaTime;
 
-			if (TraceLevel > 0) DrawForces(forces);
+			UpdateMotors(dt);
+
+			UpdateSurfaces(dt);
 		}
 
-		IList<ForceProvider> UpdateForces()
+		void UpdateMotors(float dt)
 		{
-			var forces = MotorForces().Union(ControlSurfaces()).ToList();
-			foreach (var f in forces)
+			foreach (var m in _motors)
 			{
-				_rigidBody.AddForceAtPosition(f.Force*f.ForceScale, f.Position, ForceMode.Impulse);
+				m.UpdateForce(dt);
+			}
+		}
+
+		void UpdateSurfaces(float dt)
+		{
+			foreach (var surface in _controlSurfaces)
+			{
+				surface.UpdateForce(dt);
+
+				var f = surface.ForceProvider;
+
+				_rigidBody.AddForceAtPosition(f.Force, f.Position, ForceMode.Impulse);
 				_rigidBody.AddTorque(f.Torque*f.TorqueScale, ForceMode.Impulse);
-			}
 
-			return forces;
-		}
-
-		IEnumerable<ForceProvider> MotorForces()
-		{
-			return _motors.Select(m => m.ForceProvider);
-		}
-
-		IEnumerable<ForceProvider> ControlSurfaces()
-		{
-			return _controlSurfaces.Select(cp => cp.ForceProvider);
-		}
-
-		void DrawForces(IList<ForceProvider> fp)
-		{
-			foreach (var f in fp)
-			{
-				Debug.DrawLine(f.Position, f.Position + f.Force, Color.red, 0, false);
+				Debug.LogFormat("force: {0} at {1}", f.Force, f.Position);
+				Debug.LogFormat("torque: {0}", f.Torque);
 			}
 		}
+
+		// IEnumerable<ForceProvider> MotorForces()
+		// {
+		// 	return _motors.Select(m => m.ForceProvider);
+		// }
+
+		// IEnumerable<ForceProvider> ControlSurfaces()
+		// {
+		// 	return _controlSurfaces.Select(cp => cp.ForceProvider);
+		// }
+
+		// void DrawForces(IList<ForceProvider> fp)
+		// {
+		// 	foreach (var f in fp)
+		// 	{
+		// 		Debug.DrawLine(f.Position, f.Position + f.Force, Color.red, 0, false);
+		// 	}
+		// }
 
 		private Rigidbody _rigidBody;
 		private List<ControlSurface> _controlSurfaces = new List<ControlSurface>();

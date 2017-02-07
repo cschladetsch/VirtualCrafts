@@ -23,7 +23,7 @@ namespace App.FixedWing
 			var delta = Controller.Calculate(DesiredAngle, Angle, dt);
 			Angle += delta;
 			Angle = Mathf.Clamp(Angle, -MaxThrow, MaxThrow);
-			ForceProvider.transform.localRotation = Quaternion.AngleAxis(Angle, Axis);
+			ForceProvider.transform.localRotation = Quaternion.AngleAxis(Angle, RotationAxis);
 		}
 	}
 }
