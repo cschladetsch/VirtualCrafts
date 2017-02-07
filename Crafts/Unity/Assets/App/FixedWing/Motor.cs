@@ -5,38 +5,55 @@ using App.Math;
 
 namespace App.FixedWing
 {
+	// A Motor has a ForceProvider that has a thrust proportional
+	// to the rpm of the motor and the scale factor of the props
     public class Motor : MonoBehaviour
 	{
 		public float DesiredRpm;
 		public float MaxThrottleRpm;
-		public float Rpm;
+		public float CurrentRpm;
 
-		public ForceProvider ForceProvider;
+		public Vector3 Thrust;
+		public float RpmThrustScale;
+
+		public Vector3 Position { get { return transform.position; } }
 
 		public PidScalarController PidController = new PidScalarController();
 		public Vector3 PID = new Vector3(0.8f, 0.5f, 0.01f);
-		public float RotGizmoScale = 0.5f;
 
-		public float RpmScale = 1;
+		// just for visuals. using real speeds is hard to see, so
+		// slow it down artificially
+		public float PropRotationRenderScale = 0.5f;
 
 		private void Update()
 		{
-			_rot += Time.deltaTime*6.0f*Rpm*RotGizmoScale;
+			// rotate the visuals only. 
+			// 6.0 means 1 full revolution in 60 seconds: 6*60 = 360
+			_rot += Time.deltaTime*6.0f*CurrentRpm*PropRotationRenderScale;
 			transform.localRotation = Quaternion.AngleAxis(_rot, -Vector3.forward);
 		}
 
-		public void UpdateForce(float dt)
+		public void UpdateRpm(float dt)
 		{
-			PidController.P = PID.x;
-			PidController.I = PID.y;
-			PidController.D = PID.z;
+			PidController.SetPid(PID);
 
-			var change = PidController.Calculate(DesiredRpm*MaxThrottleRpm, Rpm, dt);
-			Rpm += change;
+			// progress towards desired Rpm
+			var change = PidController.Calculate(
+				DesiredRpm*MaxThrottleRpm, CurrentRpm, dt);
+			CurrentRpm += change;
+			CurrentRpm = Mathf.Clamp(CurrentRpm, 0, MaxThrottleRpm);
 
-			Rpm = Mathf.Clamp(Rpm, 0, MaxThrottleRpm);
+			DebugGraph.Log("Rpm", CurrentRpm);
+		}
 
-			DebugGraph.Log("Rpm", Rpm);
+		public void Update(float dt)
+		{
+			UpdateRpm(dt);
+
+			Thrust = transform.forward
+				*CurrentRpm
+				*RpmThrustScale
+				*dt;
 		}
 
 		private float _rot;

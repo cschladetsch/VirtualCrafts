@@ -73,6 +73,13 @@ namespace App.Math
 			return output;
 		}
 
+		public void SetPid(Vector3 pid)
+		{
+			P = pid.x;
+			I = pid.y;
+			D = pid.z;
+		}
+
 		int _count;
         float _max = 100;
         float _min = -100;

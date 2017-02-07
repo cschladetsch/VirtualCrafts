@@ -290,11 +290,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DesiredRpm: 0
   MaxThrottleRpm: 2000
-  Rpm: 0
-  ForceProvider: {fileID: 543141064}
+  CurrentRpm: 0
+  Thrust: {x: 0, y: 0, z: 0}
+  RpmThrustScale: 0
   PID: {x: 1, y: 0, z: 0}
-  RotGizmoScale: 0.5
-  RpmScale: 0.02
+  PropRotationRenderScale: 0.5
 --- !u!4 &5654037
 Transform:
   m_ObjectHideFlags: 0
@@ -302,16 +302,15 @@ Transform:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 5654035}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: -0.08906804, w: 0.99602556}
+  m_LocalPosition: {x: 0, y: 0, z: 2.75}
   m_LocalScale: {x: 1, y: 1, z: 5}
   m_Children:
   - {fileID: 1760655904}
   - {fileID: 1942653798}
-  - {fileID: 543141065}
   m_Father: {fileID: 95271743}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -10.22}
 --- !u!1 &35288034
 GameObject:
   m_ObjectHideFlags: 0
@@ -955,92 +954,6 @@ Transform:
   m_Father: {fileID: 1255812942}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &543141063
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 543141065}
-  - component: {fileID: 543141064}
-  m_Layer: 12
-  m_Name: Force
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &543141064
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 543141063}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 927b3bcd7dfe549e2ad4dabfc584a6cc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ThrustRelativeForce:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 2
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    - serializedVersion: 2
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 0
-  ForceScale: 0.5
-  ForceDir: {x: 0, y: 0, z: 0}
-  Force: {x: 0, y: 0, z: 1}
-  ThrustRelativeTorque:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 2
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    - serializedVersion: 2
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 0
-  TorqueScale: 0
-  Torque: {x: 0, y: 0, z: 0}
-  ColorForce: {r: 1, g: 0, b: 1, a: 1}
-  ColorTorque: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  GizmodMagnitudeTorque: 0
-  GizmodMagnitudeForce: 1000
-  TraceLevel: 2
---- !u!4 &543141065
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 543141063}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.46}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 5654037}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &543268406
 GameObject:
   m_ObjectHideFlags: 0
@@ -1660,7 +1573,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1219219876
 Transform:
   m_ObjectHideFlags: 0
@@ -1694,7 +1607,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1227405524
 Transform:
   m_ObjectHideFlags: 0
@@ -2533,7 +2446,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1760655903}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.5}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.2, y: 1.06, z: 0.040000003}
   m_Children: []
   m_Father: {fileID: 5654037}
@@ -2740,8 +2653,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1942653797}
   m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0.5}
-  m_LocalScale: {x: 0.2000001, y: 1.06, z: 0.04}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.20000035, y: 1.0600009, z: 0.04}
   m_Children: []
   m_Father: {fileID: 5654037}
   m_RootOrder: 1

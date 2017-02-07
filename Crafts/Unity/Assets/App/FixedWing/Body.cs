@@ -51,7 +51,8 @@ namespace App.FixedWing
 		{
 			foreach (var m in _motors)
 			{
-				m.UpdateForce(dt);
+				m.Update(dt);
+				_rigidBody.AddForceAtPosition(m.Thrust, m.Position, ForceMode.Impulse);
 			}
 		}
 
@@ -66,8 +67,7 @@ namespace App.FixedWing
 				_rigidBody.AddForceAtPosition(f.Force, f.Position, ForceMode.Impulse);
 				_rigidBody.AddTorque(f.Torque*f.TorqueScale, ForceMode.Impulse);
 
-				Debug.LogFormat("force: {0} at {1}", f.Force, f.Position);
-				Debug.LogFormat("torque: {0}", f.Torque);
+				// Debug.LogFormat("force: {0} at {1}", f.Force, f.Position);
 			}
 		}
 
@@ -90,8 +90,8 @@ namespace App.FixedWing
 		// }
 
 		private Rigidbody _rigidBody;
-		private List<ControlSurface> _controlSurfaces = new List<ControlSurface>();
 		private List<Motor> _motors = new List<Motor>();
+		private List<ControlSurface> _controlSurfaces = new List<ControlSurface>();
 	}
 }
 

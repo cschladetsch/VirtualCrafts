@@ -66,7 +66,6 @@ namespace App.FixedWing
 					ForceProvider.Position, 
 					ForceProvider.Position + ForceProvider.Force*ForceDrawScale, 
 					Color.blue, 0, false);
-			
 		}
 
 		/// <summary>
@@ -85,7 +84,7 @@ namespace App.FixedWing
 		public void UpdateForce(float dt)
 		{
 			var motor = _body.FlightController.Motor;
-			var thrust = Mathf.Clamp01(motor.Rpm/motor.MaxThrottleRpm);		// normalise thrust
+			var thrust = Mathf.Clamp01(motor.CurrentRpm/motor.MaxThrottleRpm);		// normalise thrust
 
 			ChangeAngle(dt);
 

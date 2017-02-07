@@ -48,7 +48,7 @@ namespace App.FixedWing
 
 		void DrawGraphs()
 		{
-			DebugGraph.Log("Rpm", Motor.Rpm);
+			DebugGraph.Log("Rpm", Motor.CurrentRpm);
 			DebugGraph.Log("LeftAil", LeftAileron.Angle);
 			DebugGraph.Log("RightAil", RightAileron.Angle);
 			DebugGraph.Log("Rudder", Rudder.Angle);
