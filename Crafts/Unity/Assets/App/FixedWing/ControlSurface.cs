@@ -21,6 +21,8 @@ namespace App.FixedWing
 	// a general control surface on the model
 	public class ControlSurface : MonoBehaviour
 	{
+		public EChannel Channel;
+
 		// the axis that the surface rotates around
 		public Vector3 RotationAxis;
 
@@ -46,18 +48,7 @@ namespace App.FixedWing
 		public void Construct(Body body)
 		{
 			_body = body;
-			ForceProvider = GetComponentInChildren<ForceProvider>();
 		}
-
-		// private void Update()
-		// {
-		// 	// transform.localRotation = Quaternion.AngleAxis(Angle, RotationAxis);
-
-		// 		Debug.DrawLine(
-		// 			ForceProvider.Position, 
-		// 			ForceProvider.Position + ForceProvider.Force*ForceDrawScale, 
-		// 			Color.blue, 0, false);
-		// }
 
 		/// <summary>
 		/// Callback to draw gizmos that are pickable and always drawn.
@@ -75,26 +66,16 @@ namespace App.FixedWing
 		public void Step(float dt)
 		{
 			var motor = _body.FlightController.Motor;
-			var thrust = Mathf.Clamp01(motor.CurrentRpm/motor.MaxThrottleRpm);		
-
 			ChangeAngle(dt);
-
-			ChangeForce(dt, thrust);
-
-			// tilting of wings has very little torque effect
-			// ChangeTorque(dt, thrust);
+			ChangeForce(dt, motor);
 		}
 
-		private void ChangeForce(float dt, float thrust)
+		private void ChangeForce(float dt, Motor motor)
 		{
-			var fp = ForceProvider;
-			var scale = fp.ForceScale*fp.ThrustRelativeTorque.Evaluate(thrust);
-			var dir = fp.transform.TransformVector(fp.ForceDir);
-			fp.Force = dir*scale;
-			DebugGraph.Log(gameObject.name + ": force=", fp.Force);
+			ForceProvider.Step(dt, motor.Thrust);
+			DebugGraph.Log(gameObject.name + ": force=", ForceProvider.Force);
 		}
 
-		// some control surfaces require specialised angle changes
 		virtual protected void ChangeAngle(float dt)
 		{
 			// UpdatePid();

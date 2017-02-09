@@ -14,16 +14,16 @@ using UniRx;
 
 namespace App.FixedWing
 {
+	public enum EChannel
+	{
+		THR,
+		AIL,
+		ELE,
+		RUD,
+	};
+
 	public class Transmitter : MonoBehaviour 
 	{
-		public enum EChannel
-		{
-			THR,
-			AIL,
-			ELE,
-			RUD,
-		};
-
 		// all in range 0..1
 		public float THR;
 		public float AIL;

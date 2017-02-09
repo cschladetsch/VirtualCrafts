@@ -16,6 +16,11 @@ namespace App.FixedWing
 		public Vector3 Thrust;
 		public float RpmThrustScale;
 
+		public float NormalisedThrustMagnitude 
+		{
+			 get { return CurrentRpm/MaxThrottleRpm; } 
+		} 
+
 		public Vector3 Position { get { return transform.position; } }
 
 		public PidScalarController PidController = new PidScalarController();

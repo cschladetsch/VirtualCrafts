@@ -17,13 +17,14 @@ namespace App.FixedWing
 	public class FlightController : MonoBehaviour 
 	{
 		public Transmitter Transmitter;
-
+		public Body Body;
 		public Motor Motor;
+
+		public Vector3[] Pids = new Vector3[4];
 		public ControlSurface LeftAileron;
 		public ControlSurface RightAileron;
 		public ControlSurface Rudder;
-		public ControlSurface LeftElevator;
-		public ControlSurface RightElevator;
+		public ControlSurface Elevator;
 
 		public int TraceLevel;
 
@@ -36,14 +37,53 @@ namespace App.FixedWing
 		{
 		}
 
-		private void Update()
+		private void FixedUpdate()
 		{
-			UpdateThrottle();
-			UpdateElevators();
-			UpdateAirlerons();
-			UpdateRudder();
+			float dt = Time.fixedDeltaTime;
+
+			WritePids();
+
+			UpdateInput();
+
+			Stabilise(dt);
 
 			if (TraceLevel > 1) DrawGraphs();
+		}
+
+		void WritePids()
+		{
+			for (var n = 0; n < 4; ++n)
+			{
+				_pidControlllers[n].SetPid(Pids[n]);
+			}
+		}
+
+		void Stabilise(float dt)
+		{
+			var euler = Body.transform.rotation.eulerAngles;
+
+			StabiliseAilerons(euler, dt);
+		}
+
+		void StabiliseAilerons(Vector3 euler, float dt)
+		{
+			var desired = LeftAileron.Angle;
+			var actual = euler.z;
+
+			var delta = _pidControlllers[(int)EChannel.AIL].Calculate(desired, actual, dt);
+
+			Debug.LogFormat("Desired: {0}, Delta:{1}", desired, actual);
+
+			LeftAileron.DesiredAngle += delta/2.0f;
+			RightAileron.DesiredAngle -= delta/2.0f;
+		}
+
+		void UpdateInput()
+		{
+			UpdateThrottleInput();
+			UpdateElevatorInput();
+			UpdateAirleronsInput();
+			UpdateRudderInput();
 		}
 
 		void DrawGraphs()
@@ -52,17 +92,17 @@ namespace App.FixedWing
 			DebugGraph.Log("LeftAil", LeftAileron.Angle);
 			DebugGraph.Log("RightAil", RightAileron.Angle);
 			DebugGraph.Log("Rudder", Rudder.Angle);
-			DebugGraph.Log("Elevator", LeftElevator.Angle);
+			DebugGraph.Log("Elevator", Elevator.Angle);
 		}
 
-		private void UpdateRudder()
+		private void UpdateRudderInput()
 		{
 			var raw = Mathf.Clamp01(Transmitter.RUD);	// [0..1]
 			var scaled = raw - 0.5f;					// [-0.5..0.5]
 			Rudder.DesiredAngle = scaled*2*Rudder.MaxThrow;
 		}
 
-		private void UpdateAirlerons()
+		private void UpdateAirleronsInput()
 		{
 			var raw = Mathf.Clamp01(Transmitter.AIL);	// input from Tx in [0..1] where 0.5 means centered
 			var scaled = raw - 0.5f;
@@ -81,13 +121,13 @@ namespace App.FixedWing
 			RightAileron.DesiredAngle = -val;
 		}
 
-		private void UpdateThrottle()
+		private void UpdateThrottleInput()
 		{
 			var max = Motor.MaxThrottleRpm;
 			Motor.DesiredRpm = Mathf.Clamp(Transmitter.THR, 0, max);
 		}
 
-		void UpdateElevators()
+		void UpdateElevatorInput()
 		{
 			var raw = Mathf.Clamp01(Transmitter.ELE);	// input from Tx in [0..1] where 0.5 means centered
 			var scaled = raw - 0.5f;
@@ -98,18 +138,16 @@ namespace App.FixedWing
 
 			// for now, we treat the elevators as a unit.
 			// we are not modelling a jet fighter.
-			var maxThrow = LeftElevator.MaxThrow;
+			var maxThrow = Elevator.MaxThrow;
 			var val = scaled*2*maxThrow;		// *2 because we can be - or + max
 
 			Assert.IsTrue(val >= -maxThrow && val <= maxThrow);
 
-			LeftElevator.DesiredAngle = val;
-			RightElevator.DesiredAngle = val;
+			Elevator.DesiredAngle = val;
+			Elevator.DesiredAngle = val;
 		}
 
-		private void FixedUpdate()
-		{
-		}
+		private PidScalarController[] _pidControlllers = new PidScalarController[4];
 	}
 }
 

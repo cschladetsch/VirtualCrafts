@@ -20,7 +20,6 @@ namespace App.FixedWing
 		// how the force provided by this surface relates to the overall thrust
 		public AnimationCurve ThrustRelativeForce = new AnimationCurve();
 		public float ForceScale;
-		public Vector3 ForceDir;
 		public Vector3 Force;	// readonly: TODO: custom insector
 
 		// how the torque provided by this surface relates to the overall thrust
@@ -55,15 +54,14 @@ namespace App.FixedWing
 			if (TraceLevel > 1) DrawForceAndTorque();
 		}
 
-		// thrust is 
 		private void UpdateForce(float dt, Vector3 velocity)
 		{
-			// HACK: assume we're always moving along local +z axis
 			var speed = velocity.magnitude;	
-			Force = transform.TransformVector(ForceDir)	// rotate with craft
-				*ForceScale								// simulate lift of surface
-				*ThrustRelativeForce.Evaluate(speed)	// ...lift will scale with speed
-				*dt;									// delta time
+			Force = transform.forward
+				*ForceScale					
+				*ThrustRelativeForce.Evaluate(speed);
+
+			Debug.LogFormat("fwd={0}, force={1}", transform.forward, Force);
 		}
 
 		private void UpdateTorque(float dt, Vector3 thrust)
