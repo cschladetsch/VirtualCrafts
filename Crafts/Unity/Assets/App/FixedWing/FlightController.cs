@@ -62,7 +62,7 @@ namespace App.FixedWing
 			for (var n = 0; n < 4; ++n)
 			{
 				var pid = Pids[n];
-				_pidControlllers[n].SetPid(Pids[n]);
+				_pidControlllers[n].SetPid(pid);
 			}
 		}
 
