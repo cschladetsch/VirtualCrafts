@@ -1,25 +1,15 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.Assertions;
-using Random = UnityEngine.Random;
+﻿using UnityEngine;
 
 using App.Math;
 using App.Utils;
 
-using UniRx;
-
 namespace App
 {
-	public class ForceApplier : MonoBehaviour 
+    public class ForceApplier : MonoBehaviour 
 	{
 		public Rigidbody Rod;
 		public Vector3 PositionPid;
 		public Vector3 YawPid;
-
 		public float ForceUpToRod;
 
 		private void Awake()
@@ -90,6 +80,5 @@ namespace App
 
 		private PidScalarController _position = new PidScalarController();
 	}
-
 }
 
