@@ -1082,7 +1082,11 @@ MonoBehaviour:
   Transmitter: {fileID: 4160802}
   Body: {fileID: 95271744}
   Motor: {fileID: 5654036}
-  Pids: []
+  Pids:
+  - {x: 0.8, y: 0.1, z: 0}
+  - {x: 0.8, y: 0.1, z: 0}
+  - {x: 0.8, y: 0.1, z: 0}
+  - {x: 0.8, y: 0.1, z: 0}
   LeftAileron: {fileID: 1255812941}
   RightAileron: {fileID: 1354840900}
   Rudder: {fileID: 1405358728}

@@ -35,6 +35,10 @@ namespace App.FixedWing
 
 		private void Start()
 		{
+			for (int n = 0; n < 4; ++n)
+			{
+				_pidControlllers[n] = new PidScalarController();
+			}
 		}
 
 		private void FixedUpdate()
@@ -52,8 +56,12 @@ namespace App.FixedWing
 
 		void WritePids()
 		{
+			Assert.AreEqual(Pids.Length, 4);
+			Assert.AreEqual(_pidControlllers.Length, 4);
+
 			for (var n = 0; n < 4; ++n)
 			{
+				var pid = Pids[n];
 				_pidControlllers[n].SetPid(Pids[n]);
 			}
 		}
@@ -62,20 +70,25 @@ namespace App.FixedWing
 		{
 			var euler = Body.transform.rotation.eulerAngles;
 
+			// if (euler.x < 0) euler.jjj
+			// if (euler.y < 0) euler.y += 360;
+			// if (euler.z < 0) euler.z += 360;
+
 			StabiliseAilerons(euler, dt);
 		}
 
+		// this needs to be one step above the `desired` angle provided by the transmitter,
+		// rather than changing the transmitter value itself
 		void StabiliseAilerons(Vector3 euler, float dt)
 		{
-			var desired = LeftAileron.Angle;
+			var desired = LeftAileron.DesiredAngle;
 			var actual = euler.z;
 
-			var delta = _pidControlllers[(int)EChannel.AIL].Calculate(desired, actual, dt);
+			var delta = _pidControlllers[(int)EChannel.AIL].Calculate(desired, actual, dt)*dt;
+			Debug.LogFormat("Rpm: {3}: Desired: {0}, Actual:{1}, Delta:{2}", desired, actual, delta, Motor.CurrentRpm);
 
-			Debug.LogFormat("Desired: {0}, Delta:{1}", desired, actual);
-
-			LeftAileron.DesiredAngle += delta/2.0f;
-			RightAileron.DesiredAngle -= delta/2.0f;
+			LeftAileron.CorrectionAngle += delta/2.0f;
+			RightAileron.CorrectionAngle += delta/2.0f;
 		}
 
 		void UpdateInput()
@@ -147,7 +160,7 @@ namespace App.FixedWing
 			Elevator.DesiredAngle = val;
 		}
 
-		private PidScalarController[] _pidControlllers = new PidScalarController[4];
+		public PidScalarController[] _pidControlllers = new PidScalarController[4];
 	}
 }
 

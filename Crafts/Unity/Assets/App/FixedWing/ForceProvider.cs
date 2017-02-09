@@ -61,7 +61,7 @@ namespace App.FixedWing
 				*ForceScale					
 				*ThrustRelativeForce.Evaluate(speed);
 
-			Debug.LogFormat("fwd={0}, force={1}", transform.forward, Force);
+			Debug.LogFormat("{2}: fwd={0}, force={1}", transform.forward, Force, name);
 		}
 
 		private void UpdateTorque(float dt, Vector3 thrust)

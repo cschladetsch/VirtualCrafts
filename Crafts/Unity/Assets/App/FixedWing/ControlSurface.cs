@@ -36,7 +36,10 @@ namespace App.FixedWing
 		// the angle we want to be at
 		public float DesiredAngle;
 
-		// the current angl
+		// the angle to correct from the flight-controller
+		public float CorrectionAngle;
+
+		// the current angle
 		public float Angle;
 
 		// where the force is provided, and the amount of torque
@@ -80,7 +83,8 @@ namespace App.FixedWing
 		{
 			// UpdatePid();
 
-			var delta = Controller.Calculate(DesiredAngle, Angle, dt);
+			// include the input from controller (DesiredAnle), and transmitter (CorrectionAngle)
+			var delta = Controller.Calculate(DesiredAngle + CorrectionAngle, Angle, dt)*dt;
 			Angle += delta;
 			Angle = Mathf.Clamp(Angle, -MaxThrow, MaxThrow);
 			transform.localRotation = Quaternion.AngleAxis(Angle, RotationAxis);
