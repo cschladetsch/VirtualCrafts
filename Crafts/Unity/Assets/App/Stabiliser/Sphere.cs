@@ -53,7 +53,7 @@ namespace App
 			if (_pause > 0)
 				return;
 
-			FixToXY();
+			// FixToXY();
 
 			UpdatePosition(dt);
 		}

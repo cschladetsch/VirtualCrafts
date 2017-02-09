@@ -18,8 +18,8 @@ TagManager:
   - Ground
   - Obstruction
   - Entity
-  - 
-  - 
+  - Rod
+  - ForceApplier
   - 
   - 
   - 
