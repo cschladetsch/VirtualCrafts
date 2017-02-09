@@ -76,7 +76,7 @@ namespace App
 			MoveRodVertically(hit.Value.point);
 			
 			// delta is the difference in yaw we want to induce
-			Rod.AddForceAtPosition(new Vector3(0, ForceUpToRod, 0), newPos, ForceMode.Impulse);
+			Rod.AddForceAtPosition(new Vector3(newX, ForceUpToRod, 0), newPos, ForceMode.Impulse);
 		}
 
 		void MoveRodVertically(Vector3 p)
